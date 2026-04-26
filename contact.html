@@ -25,10 +25,10 @@
 
     .profile-picture-ring {
       position: absolute;
-      inset: -6px;
+      inset: -5px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple-vivid), var(--orchid), var(--magenta-glow));
-      animation: ringRotate 6s linear infinite;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light), #D946EF);
+      animation: ringRotate 8s linear infinite;
       z-index: 0;
     }
 
@@ -42,7 +42,7 @@
       position: absolute;
       inset: 3px;
       border-radius: 50%;
-      background: var(--midnight-dark);
+      background: var(--card);
     }
 
     .profile-picture {
@@ -52,17 +52,13 @@
       border-radius: 50%;
       object-fit: cover;
       z-index: 1;
-      box-shadow:
-        0 0 40px rgba(139, 92, 246, 0.25),
-        0 0 80px rgba(139, 92, 246, 0.08);
+      box-shadow: var(--shadow-lg);
       transition: var(--transition-smooth);
     }
 
     .profile-picture:hover {
-      transform: scale(1.04);
-      box-shadow:
-        0 0 50px rgba(139, 92, 246, 0.35),
-        0 0 100px rgba(139, 92, 246, 0.12);
+      transform: scale(1.03);
+      box-shadow: var(--shadow-xl);
     }
 
     .profile-name {
@@ -71,21 +67,21 @@
       font-weight: 800;
       margin-bottom: 0.5rem;
       letter-spacing: -0.02em;
+      color: var(--text);
     }
 
     .profile-section-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.5rem 1.5rem;
+      padding: 0.45rem 1.4rem;
       border-radius: var(--radius-full);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       font-family: 'Space Grotesk', sans-serif;
-      color: var(--purple-soft);
-      background: var(--purple-faint);
-      border: 1px solid rgba(139, 92, 246, 0.2);
-      box-shadow: var(--neo-inset);
+      color: var(--accent);
+      background: var(--accent-faint);
+      border: 1px solid rgba(139, 92, 246, 0.15);
       letter-spacing: 0.04em;
     }
 
@@ -94,14 +90,14 @@
       height: 3px;
       margin: 2rem auto;
       border-radius: 3px;
-      background: linear-gradient(90deg, var(--purple-vivid), var(--orchid));
-      opacity: 0.5;
+      background: var(--accent);
+      opacity: 0.35;
     }
 
     .contact-info-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 0.75rem;
       max-width: 440px;
       margin: 0 auto;
     }
@@ -111,35 +107,33 @@
       align-items: center;
       gap: 1rem;
       padding: 1rem 1.25rem;
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(139, 92, 246, 0.12);
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      box-shadow: var(--neo-flat);
+      box-shadow: var(--shadow-xs);
       transition: var(--transition-smooth);
       text-decoration: none;
-      color: var(--text-primary);
+      color: var(--text);
     }
 
     .contact-info-item:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--neo-raised);
-      border-color: rgba(139, 92, 246, 0.3);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent-lighter);
     }
 
     .contact-info-item .icon-circle {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1rem;
       flex-shrink: 0;
-      background: linear-gradient(135deg, var(--purple-vivid), var(--orchid));
+      background: var(--accent);
       color: #fff;
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+      box-shadow: 0 2px 6px rgba(139, 92, 246, 0.2);
     }
 
     .contact-info-item .info-text {
@@ -148,7 +142,7 @@
     }
 
     .contact-info-item .info-label {
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -157,11 +151,11 @@
 
     .contact-info-item .info-value {
       font-size: 0.95rem;
-      color: var(--text-primary);
+      color: var(--text);
       font-weight: 500;
     }
 
-    /* Floating particles behind profile card */
+    /* Decorative shapes */
     .contact-particles {
       position: absolute;
       inset: 0;
@@ -173,13 +167,13 @@
     .contact-particles .particle {
       position: absolute;
       border-radius: 50%;
-      opacity: 0.08;
-      animation: particleFloat 8s ease-in-out infinite;
+      opacity: 0.04;
+      animation: particleFloat 10s ease-in-out infinite;
     }
 
     @keyframes particleFloat {
       0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-20px) scale(1.15); }
+      50% { transform: translateY(-15px) scale(1.1); }
     }
   </style>
 </head>
@@ -225,9 +219,9 @@
         
         <!-- Decorative particles -->
         <div class="contact-particles">
-          <div class="particle" style="width:180px;height:180px;background:var(--purple-neon);top:10%;left:-5%;animation-delay:0s;"></div>
-          <div class="particle" style="width:120px;height:120px;background:var(--magenta-glow);bottom:5%;right:-3%;animation-delay:2s;"></div>
-          <div class="particle" style="width:80px;height:80px;background:var(--orchid);top:50%;right:20%;animation-delay:4s;filter:blur(40px);"></div>
+          <div class="particle" style="width:180px;height:180px;background:var(--accent);top:10%;left:-5%;animation-delay:0s;"></div>
+          <div class="particle" style="width:120px;height:120px;background:var(--accent-light);bottom:5%;right:-3%;animation-delay:2s;"></div>
+          <div class="particle" style="width:80px;height:80px;background:var(--accent-lighter);top:50%;right:20%;animation-delay:4s;filter:blur(40px);"></div>
         </div>
 
         <div class="contact-profile-card relative z-10">
@@ -236,14 +230,14 @@
           <div class="profile-picture-wrapper">
             <div class="profile-picture-ring"></div>
             <img 
-              src="images/profile.png" 
+              src="images/adi.png" 
               alt="Orlanda, Ardee Jhade B. — Profile Picture" 
               class="profile-picture"
             >
           </div>
 
           <!-- Name -->
-          <h2 class="profile-name gradient-text">Orlanda, Ardee Jhade B.</h2>
+          <h2 class="profile-name">Orlanda, Ardee Jhade B.</h2>
 
           <!-- Section -->
           <div style="margin-top: 0.75rem;">
@@ -273,7 +267,7 @@
             </a>
 
             <a href="tel:09273772079" class="contact-info-item">
-              <div class="icon-circle" style="background: linear-gradient(135deg, #22c55e, #059669);">
+              <div class="icon-circle" style="background: #22c55e;">
                 <i class="fas fa-phone"></i>
               </div>
               <div class="info-text">
@@ -293,7 +287,7 @@
             </a>
 
             <div class="contact-info-item" style="cursor:default;">
-              <div class="icon-circle" style="background: linear-gradient(135deg, var(--magenta-glow), var(--violet-deep));">
+              <div class="icon-circle" style="background: #A855F7;">
                 <i class="fas fa-school"></i>
               </div>
               <div class="info-text">

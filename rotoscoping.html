@@ -33,113 +33,616 @@
     </div>
   </nav>
 
+<style>
+  /* ── About page specific ── */
+  .about-hero {
+    padding: 4.5rem 2rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .about-hero-left h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 0.8rem;
+    color: var(--text);
+  }
+  .about-hero-left p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 1.5rem;
+  }
+  .about-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .about-pill {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 99px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--panel);
+  }
+  /* Profile card */
+  .profile-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent);
+    margin-bottom: 0.4rem;
+    flex-shrink: 0;
+    display: block;
+  }
+  .profile-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+  }
+  .profile-sub {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  .profile-divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0.4rem 0;
+  }
+  .profile-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.86rem;
+    gap: 0.5rem;
+  }
+  .pr-key { color: var(--muted); }
+  .pr-val { color: var(--text); font-weight: 600; text-align: right; }
+  /* Main content */
+  .about-body {
+    padding: 0 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .about-divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0;
+  }
+  /* Tools grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .tool-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    transition: border-color 0.15s;
+  }
+  .tool-card:hover { border-color: var(--accent-2); }
+  .tool-icon { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .tool-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+  }
+  .tool-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+  /* Project summary cards */
+  .project-summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .ps-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+    display: block;
+  }
+  .ps-card:hover { border-color: var(--accent-2); transform: translateY(-3px); }
+  .ps-card.roto:hover { border-color: var(--accent); }
+  .ps-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+  .ps-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .ps-card.roto .ps-tag { color: var(--accent); }
+  .ps-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.5rem;
+  }
+  .ps-desc {
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+  /* Course context */
+  .course-box {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    padding: 2rem 2.2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .course-box h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-2);
+    margin: 0 0 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .course-box p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .course-list li {
+    font-size: 0.88rem;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .course-list li::before {
+    content: '→';
+    color: var(--accent-2);
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+  @media (max-width: 800px) {
+    .about-hero { grid-template-columns: 1fr; padding: 3rem 1rem 2rem; gap: 1.5rem; }
+    .tools-grid { grid-template-columns: 1fr 1fr; }
+    .project-summary-grid { grid-template-columns: 1fr; }
+    .course-box { grid-template-columns: 1fr; gap: 1.2rem; }
+    .about-body { padding-left: 1rem; padding-right: 1rem; }
+  }
+  @media (max-width: 480px) {
+    .tools-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
   <!-- Main Content -->
-  <main class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
-
-    <a href="index.html" class="back-link fade-up">
-      <i class="fas fa-chevron-left"></i> Back to Home
-    </a>
-
-    <!-- Hero Section -->
-    <section class="hero-glass fade-up">
-      <div class="glow-ring purple" style="width:350px;height:350px;top:-180px;right:-100px;"></div>
-      <h1 class="gradient-text">Rotoscoping Progress</h1>
-      <p>Follow my comprehensive journey through the art of rotoscoping from week 3 to week 13.
-        Each video showcases the progression of skills and techniques learned throughout this creative process.</p>
-    </section>
-
-    <!-- Rotoscoping Process Section -->
-    <section class="content-section">
-      <div class="section-title fade-up">
-        <h2><span class="gradient-text">The Rotoscoping Process</span></h2>
+  <main>
+    <!-- ── HERO ── -->
+    <section class="about-hero">
+      <div class="about-hero-left reveal">
+        <p class="eyebrow">Rotoscoping Project</p>
+        <h1>Rotoscoping Progress</h1>
+        <p>Follow my comprehensive journey through the art of rotoscoping from week 3 to week 13. Each video showcases the progression of skills and techniques learned throughout this creative process.</p>
+        <div class="about-pills">
+          <span class="about-pill">BSIT-S-2A</span>
+          <span class="about-pill">TUP-Taguig</span>
+          <span class="about-pill">After Effects</span>
+          <span class="about-pill">CapCut</span>
+          <span class="about-pill">Rotoscoping</span>
+        </div>
       </div>
-
-      <div class="grid-3 stagger-children">
+      <!-- Profile card -->
+      <div class="profile-card reveal">
+        <img class="profile-avatar" src="images/adi.png" alt="Orlanda, Ardee Jhade B." />
+        <p class="profile-name">Orlanda, Ardee Jhade B.</p>
+        <p class="profile-sub">BSIT — Bachelor of Science in Information Technology</p>
+        <hr class="profile-divider" />
+        <div class="profile-row">
+          <span class="pr-key">University</span>
+          <span class="pr-val">TUP – Taguig</span>
+        </div>
+        <div class="profile-row">
+          <span class="pr-key">Section</span>
+          <span class="pr-val">BSIT-S-2A</span>
+        </div>
+        <div class="profile-row">
+          <span class="pr-key">Course focus</span>
+          <span class="pr-val">Multimedia</span>
+        </div>
+        <div class="profile-row">
+          <span class="pr-key">Projects</span>
+          <span class="pr-val">Rotoscoping · Solar System</span>
+        </div>
+      </div>
+    </section>
+    <!-- ── BODY ── -->
+    <div class="about-body">
+      <hr class="about-divider" />
+      <!-- Tools & Software -->
+      <div>
+        <div class="home-section-head reveal" style="margin-bottom:1.5rem">
+          <p class="eyebrow">Tools & Software</p>
+          <h2>What was used to create this rotoscoping project</h2>
+        </div>
+        <div class="tools-grid">
+          <div class="tool-card reveal">
+            <span class="tool-icon">🎬</span>
+            <p class="tool-name">Adobe After Effects</p>
+            <p class="tool-desc">Industry-standard motion graphics software used for rotoscoping with the Roto Brush tool, layer-based compositing, and final rendering.</p>
+          </div>
+          <div class="tool-card reveal">
+            <span class="tool-icon">✂️</span>
+            <p class="tool-name">CapCut</p>
+            <p class="tool-desc">User-friendly video editor used for adding backgrounds, text overlays, and effects before exporting the final output.</p>
+          </div>
+          <div class="tool-card reveal">
+            <span class="tool-icon">📹</span>
+            <p class="tool-name">Video Reference</p>
+            <p class="tool-desc">Original footage used as the basis for rotoscoping, providing the motion and timing for the Roto Brush selections.</p>
+          </div>
+          <div class="tool-card reveal">
+            <span class="tool-icon">🌐</span>
+            <p class="tool-name">HTML / CSS / JS</p>
+            <p class="tool-desc">This portfolio site is built with vanilla HTML, CSS, and JavaScript — hosted on GitHub Pages with no build tools.</p>
+          </div>
+        </div>
+      </div>
+      <hr class="about-divider" />
+      <!-- Projects -->
+      <div>
+        <div class="home-section-head reveal" style="margin-bottom:1.5rem">
+          <p class="eyebrow">Rotoscoping Process</p>
+          <h2>The Rotoscoping Process</h2>
+        </div>
+        <div class="grid-3 stagger-children">
         <!-- Step 1 -->
         <div class="step-card">
           <div class="step-number">1</div>
-          <h3>Video Reference Preparation</h3>
-          <p>The first step involves selecting and preparing the video reference. This includes choosing the right
-            footage and adjusting the frame rate for optimal rotoscoping results.</p>
+          <h3>Find a Video to Rotoscope</h3>
+          <p>Begin by selecting a suitable video to use as your rotoscoping reference. Choose footage with clear movement and distinct body parts or clothing for the best results.</p>
           <div style="border-radius: var(--radius-sm); overflow: hidden;">
-            <img src="/multimedia/images/Step1.png" alt="Video Reference Preparation" class="process-image">
+            <img src="images/1stStep.png" alt="Find a Video to Rotoscope" class="process-image">
           </div>
         </div>
 
         <!-- Step 2 -->
         <div class="step-card">
           <div class="step-number">2</div>
-          <h3>Download FlipaClip</h3>
-          <p>Download and install FlipaClip — a powerful frame-by-frame animation app that serves as the primary tool
-            for creating the rotoscope animation.</p>
+          <h3>Import the Video into After Effects</h3>
+          <p>Open Adobe After Effects and import the selected video into your project. Drag it into a new composition to begin the rotoscoping workflow.</p>
           <div style="border-radius: var(--radius-sm); overflow: hidden;">
-            <img src="/multimedia/images/Step2.png" alt="Download FlipaClip" class="process-image">
+            <img src="images/2ndStep.jpg" alt="Import Video into After Effects" class="process-image">
           </div>
         </div>
 
         <!-- Step 3 -->
         <div class="step-card">
           <div class="step-number">3</div>
-          <h3 class="text-pink">Create a New Project</h3>
-          <p>Create a new project in FlipaClip by selecting the desired canvas size and setting the frames per second
-            (FPS) to match the intended animation speed.</p>
+          <h3 class="text-pink">Create &amp; Duplicate Layers</h3>
+          <p>Create or duplicate the video layer for each body part or clothing element you want to isolate — for example, HairLayer, SkinLayer, ShirtLayer, PantsLayer, and so on.</p>
           <div style="border-radius: var(--radius-sm); overflow: hidden;">
-            <img src="/multimedia/images/Step3.png" alt="Create FlipaClip Project" class="process-image">
+            <img src="images/3rdStep.jpg" alt="Create and Duplicate Layers" class="process-image">
           </div>
         </div>
 
         <!-- Step 4 -->
         <div class="step-card">
           <div class="step-number">4</div>
-          <h3 class="text-pink">Import the Video Reference</h3>
-          <p>Tap the three-dot menu within FlipaClip and select "Add a Video" to import the reference footage. This
-            allows you to trace over each frame directly.</p>
+          <h3 class="text-pink">Use the Roto Brush Tool</h3>
+          <p>Select a layer by double-clicking it, then press <strong>Alt + W</strong> to choose the Roto Brush version. Use the brush to carefully select the specific body part or clothing item assigned to that layer.</p>
           <div style="border-radius: var(--radius-sm); overflow: hidden;">
-            <img src="/multimedia/images/Step4.png" alt="Import Video Reference" class="process-image">
+            <img src="images/4thStep.jpg" alt="Roto Brush Selection" class="process-image">
           </div>
         </div>
 
         <!-- Step 5 -->
         <div class="step-card">
           <div class="step-number">5</div>
-          <h3 class="text-pink">Rotoscope Each Frame</h3>
-          <p>Carefully trace over each frame of the video reference to create the rotoscoped animation. This is the most
-            time-intensive step, requiring precision and consistency across every frame.</p>
+          <h3 class="text-pink">Render &amp; Freeze the Selection</h3>
+          <p>After completing your Roto Brush selection, press <strong>Space</strong> to render and propagate it through all frames. Once the playback finishes, click <strong>Freeze</strong> if there are no conflicts with the selection.</p>
           <div style="border-radius: var(--radius-sm); overflow: hidden;">
-            <img src="/multimedia/images/Step5.png" alt="Rotoscoping Each Frame" class="process-image">
+            <img src="images/5thStep.jpg" alt="Render and Freeze Roto Brush" class="process-image">
           </div>
         </div>
 
         <!-- Step 6 -->
         <div class="step-card">
           <div class="step-number">6</div>
-          <h3 class="text-pink">Final Edits &amp; Export</h3>
-          <p>Apply finishing touches by adding the original video side-by-side for comparison, incorporating personal
-            branding elements, and exporting the completed animation.</p>
+          <h3 class="text-pink">Apply Solid Color Layers</h3>
+          <p>Create a new solid layer by pressing <strong>Ctrl + Y</strong>, choose a color, and click OK. Then toggle the Switches/Modes panel and set the solid to interact with the corresponding layer — for example, apply a skin-tone solid, set it to "No Mat," and assign it to the SkinLayer.</p>
           <div style="border-radius: var(--radius-sm); overflow: hidden;">
-            <img src="/multimedia/images/Step6.png" alt="Final Edits and Export" class="process-image">
+            <img src="images/6thStep.jpg" alt="Apply Solid Color Layers" class="process-image">
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="step-card">
+          <div class="step-number">7</div>
+          <h3 class="text-pink">Render &amp; Export from After Effects</h3>
+          <p>After repeating Steps 4–6 for every layer, press <strong>Ctrl + M</strong> to open the Render Queue. Configure your output settings and export the final rotoscoped animation.</p>
+          <div style="border-radius: var(--radius-sm); overflow: hidden;">
+            <img src="images/7thStep.jpg" alt="Render and Export" class="process-image">
+          </div>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="step-card">
+          <div class="step-number">8</div>
+          <h3 class="text-pink">Edit Background &amp; Text, Then Publish</h3>
+          <p>For the final editing stage — adding backgrounds, text, and effects — you have two options: continue working in After Effects or switch to CapCut for a simpler editing experience. In this project, CapCut was used for its ease of use. Once you're satisfied with the result, export the video and upload it to your YouTube channel.</p>
+          <div style="border-radius: var(--radius-sm); overflow: hidden;">
+            <img src="images/8thStep.png" alt="Edit Background and Publish" class="process-image">
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Final Animation Section -->
+    <!-- Weekly Progress Videos Section -->
     <section class="content-section">
       <div class="section-title fade-up">
-        <h2><span class="gradient-text">Final Rotoscope Animation</span></h2>
+        <h2><span class="gradient-text">Weekly Progress</span></h2>
+        <p>Follow the week-by-week evolution of the rotoscoping project.</p>
       </div>
 
-      <div class="video-showcase fade-up">
-        <div class="text-center">
-          <h3 style="font-size:1.5rem; margin-bottom:0.75rem;">Complete Rotoscope Animation</h3>
-          <p class="text-secondary" style="max-width:700px; margin:0 auto 2rem; line-height:1.7;">
-            The culmination of weeks of dedicated work, showcasing the evolution from basic rotoscoping techniques
-            to advanced animation skills with professional-quality results.
-          </p>
-          <a href="solar-system.html" class="btn-glow btn-glow-primary">
-            Solar System Project <i class="fas fa-chevron-right" style="margin-left:0.5rem;"></i>
-          </a>
+      <div class="grid-3 stagger-children">
+
+        <!-- Week 1 -->
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/iy43esYLWjk" title="Rotoscoping Week 1"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">1</span>
+              <h3>Week 1</h3>
+            </div>
+            <p>Starting the rotoscoping journey — initial setup and first traced frames.</p>
+          </div>
         </div>
+
+        <!-- Week 2 -->
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/oJZVbZ-JzgU" title="Rotoscoping Week 2"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">2</span>
+              <h3>Week 2</h3>
+            </div>
+            <p>Building on the basics — refining technique and improving frame consistency.</p>
+          </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/QV3uTJyxrV8" title="Rotoscoping Week 3"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">3</span>
+              <h3>Week 3</h3>
+            </div>
+            <p>Developing smoother transitions and more detailed rotoscoped frames.</p>
+          </div>
+        </div>
+
+        <!-- Week 4 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/MPOleKRqBj4" title="Rotoscoping Week 4"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">4</span>
+              <h3>Week 4</h3>
+            </div>
+            <p>Continuing to build momentum — exploring layer-based rotoscoping techniques.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 5 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/zJ9VXjEBlFE" title="Rotoscoping Week 5"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">5</span>
+              <h3>Week 5</h3>
+            </div>
+            <p>Applying color and solid layers to isolated body parts and clothing.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 6 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/K2IXMSbdiGw" title="Rotoscoping Week 6"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">6</span>
+              <h3>Week 6</h3>
+            </div>
+            <p>Refining Roto Brush selections and working through complex frames.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 7 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/6qpXSecRPKs" title="Rotoscoping Week 7"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">7</span>
+              <h3>Week 7</h3>
+            </div>
+            <p>Mid-project milestone — significant progress in animation quality.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 8 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/9qRKrfUaoOI" title="Rotoscoping Week 8"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">8</span>
+              <h3>Week 8</h3>
+            </div>
+            <p>Polishing individual layers and fine-tuning color assignments.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 9 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/spxe6GcLlis" title="Rotoscoping Week 9"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">9</span>
+              <h3>Week 9</h3>
+            </div>
+            <p>Tackling the most challenging sequences with improved precision.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 10 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/hvKatWLCtmA" title="Rotoscoping Week 10"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">10</span>
+              <h3>Week 10</h3>
+            </div>
+            <p>Nearly complete — adding finishing touches and reviewing all frames.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 11 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/MeLwiX35UB0" title="Rotoscoping Week 11"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">11</span>
+              <h3>Week 11</h3>
+            </div>
+            <p>Final rendering and exporting from After Effects.</p>
+          </div>
+        </div>
+        -->
+
+        <!-- Week 12 -->
+        <!--
+        <div class="weekly-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/xCp2jvmRJ-o" title="Rotoscoping Week 12"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-body">
+            <div class="flex items-center gap-1 mb-1">
+              <span class="week-badge">12</span>
+              <h3>Week 12</h3>
+            </div>
+            <p>The final output — background editing, text overlays, and publishing.</p>
+          </div>
+        </div>
+        -->
+
       </div>
     </section>
 
@@ -152,7 +655,7 @@
 
       <div class="video-showcase fade-up" style="max-width:700px; margin:0 auto;">
         <div class="video-wrapper">
-          <iframe src="https://www.youtube.com/embed/Sdy5ghAD0Mo" title="Rotoscoping Reference Video"
+          <iframe src="https://www.youtube.com/embed/miASODNYrXQ" title="Rotoscoping Reference Video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
           </iframe>

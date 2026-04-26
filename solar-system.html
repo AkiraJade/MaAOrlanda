@@ -49,7 +49,7 @@
         <!-- Age Calculator Section -->
         <section class="age-calculator fade-up" style="margin-bottom:4rem;">
             <h2 style="font-size:1.8rem; text-align:center; margin-bottom:0.75rem; position:relative; z-index:2;">Planetary Age Calculator</h2>
-            <p class="text-center" style="color:rgba(255,255,255,0.75); margin-bottom:2rem; position:relative; z-index:2;">Enter your age in Earth years to discover how old you would be on other planets!</p>
+            <p class="text-center" style="color:var(--text-secondary); margin-bottom:2rem; position:relative; z-index:2;">Enter your age in Earth years to discover how old you would be on other planets!</p>
 
             <div class="flex justify-center items-center gap-2" style="margin-bottom:2rem; position:relative; z-index:2; flex-wrap:wrap;">
                 <input type="number" id="ageInput" class="age-input" placeholder="Enter your age" min="0" max="150">
@@ -152,10 +152,12 @@
                     "The Sun's core temperature is about 27 million degrees Fahrenheit",
                     "It converts 600 million tons of hydrogen into helium every second"
                 ],
-                videoUrl: "videos/Sun.mp4",
+                videoUrl: "SolarVideo/Sun.mp4",
+                youtubeId: "",
                 icon: "☀️",
                 iconClass: "sun-icon",
-                orbitalPeriodYears: 0
+                orbitalPeriodYears: 0,
+                visible: true
             },
             {
                 name: "Mercury",
@@ -173,10 +175,12 @@
                     "It has the most eccentric orbit of all planets",
                     "Mercury is shrinking as its iron core cools"
                 ],
-                videoUrl: "videos/Mercury.mp4",
+                videoUrl: "SolarVideo/Mercury.mp4",
+                youtubeId: "",
                 icon: "☿",
                 iconClass: "mercury-icon",
-                orbitalPeriodYears: 0.241
+                orbitalPeriodYears: 0.241,
+                visible: true
             },
             {
                 name: "Venus",
@@ -194,11 +198,15 @@
                     "Surface pressure is 92 times that of Earth",
                     "Venus is often called Earth's 'evil twin'"
                 ],
-                videoUrl: "videos/Venus.mp4",
+                videoUrl: "SolarVideo/Venus.mp4",
+                youtubeId: "",
                 icon: "♀",
                 iconClass: "venus-icon",
-                orbitalPeriodYears: 0.615
+                orbitalPeriodYears: 0.615,
+                visible: true
             },
+            /* ---- Hidden planets (uncomment when ready) ---- */
+            /*
             {
                 name: "Earth",
                 description: "Earth is the only known planet to harbor life, with liquid water and a protective atmosphere.",
@@ -215,10 +223,12 @@
                     "Earth's magnetic field protects us from solar radiation",
                     "The planet is about 4.54 billion years old"
                 ],
-                videoUrl: "videos/Earth.mp4",
+                videoUrl: "SolarVideo/Earth.mp4",
+                youtubeId: "",
                 icon: "🌍",
                 iconClass: "earth-icon",
-                orbitalPeriodYears: 1.0
+                orbitalPeriodYears: 1.0,
+                visible: false
             },
             {
                 name: "Mars",
@@ -236,10 +246,12 @@
                     "Mars has polar ice caps made of water and CO2",
                     "Evidence suggests Mars once had liquid water"
                 ],
-                videoUrl: "videos/Mars.mp4",
+                videoUrl: "SolarVideo/Mars.mp4",
+                youtubeId: "",
                 icon: "♂",
                 iconClass: "mars-icon",
-                orbitalPeriodYears: 1.881
+                orbitalPeriodYears: 1.881,
+                visible: false
             },
             {
                 name: "Jupiter",
@@ -257,10 +269,12 @@
                     "Jupiter has a faint ring system",
                     "It has more mass than all other planets combined"
                 ],
-                videoUrl: "videos/Jupiter.mp4",
+                videoUrl: "SolarVideo/Jupiter.mp4",
+                youtubeId: "",
                 icon: "♃",
                 iconClass: "jupiter-icon",
-                orbitalPeriodYears: 11.86
+                orbitalPeriodYears: 11.86,
+                visible: false
             },
             {
                 name: "Saturn",
@@ -278,10 +292,12 @@
                     "Titan, its largest moon, has lakes of liquid methane",
                     "Saturn's hexagonal storm at its north pole is unique"
                 ],
-                videoUrl: "videos/Saturn.mp4",
+                videoUrl: "SolarVideo/Saturn.mp4",
+                youtubeId: "",
                 icon: "♄",
                 iconClass: "saturn-icon",
-                orbitalPeriodYears: 29.46
+                orbitalPeriodYears: 29.46,
+                visible: false
             },
             {
                 name: "Uranus",
@@ -299,10 +315,12 @@
                     "Uranus has faint rings discovered in 1977",
                     "Its blue-green color comes from methane in its atmosphere"
                 ],
-                videoUrl: "videos/Uranus.mp4",
+                videoUrl: "SolarVideo/Uranus.mp4",
+                youtubeId: "",
                 icon: "♅",
                 iconClass: "uranus-icon",
-                orbitalPeriodYears: 84.01
+                orbitalPeriodYears: 84.01,
+                visible: false
             },
             {
                 name: "Neptune",
@@ -320,10 +338,12 @@
                     "Triton, its largest moon, orbits backwards",
                     "Neptune radiates 2.6 times more energy than it receives from the Sun"
                 ],
-                videoUrl: "videos/Neptune.mp4",
+                videoUrl: "SolarVideo/Neptune.mp4",
+                youtubeId: "",
                 icon: "♆",
                 iconClass: "neptune-icon",
-                orbitalPeriodYears: 164.8
+                orbitalPeriodYears: 164.8,
+                visible: false
             },
             {
                 name: "Pluto",
@@ -341,11 +361,27 @@
                     "Charon is so large it's almost a double planet system",
                     "Pluto takes 248 Earth years to orbit the Sun once"
                 ],
-                videoUrl: "videos/Pluto.mp4",
+                videoUrl: "SolarVideo/Pluto.mp4",
+                youtubeId: "",
                 icon: "♇",
                 iconClass: "pluto-icon",
-                orbitalPeriodYears: 248.0
-            }
+                orbitalPeriodYears: 248.0,
+                visible: false
+            },
+            */
+        ];
+
+        // All bodies for the age calculator (including hidden ones)
+        const allBodies = [
+            { name: "Mercury", orbitalPeriodYears: 0.241, distanceFromSun: "57.9 million km", icon: "☿", iconClass: "mercury-icon" },
+            { name: "Venus", orbitalPeriodYears: 0.615, distanceFromSun: "108.2 million km", icon: "♀", iconClass: "venus-icon" },
+            { name: "Earth", orbitalPeriodYears: 1.0, distanceFromSun: "149.6 million km", icon: "🌍", iconClass: "earth-icon" },
+            { name: "Mars", orbitalPeriodYears: 1.881, distanceFromSun: "227.9 million km", icon: "♂", iconClass: "mars-icon" },
+            { name: "Jupiter", orbitalPeriodYears: 11.86, distanceFromSun: "778.5 million km", icon: "♃", iconClass: "jupiter-icon" },
+            { name: "Saturn", orbitalPeriodYears: 29.46, distanceFromSun: "1.43 billion km", icon: "♄", iconClass: "saturn-icon" },
+            { name: "Uranus", orbitalPeriodYears: 84.01, distanceFromSun: "2.87 billion km", icon: "♅", iconClass: "uranus-icon" },
+            { name: "Neptune", orbitalPeriodYears: 164.8, distanceFromSun: "4.5 billion km", icon: "♆", iconClass: "neptune-icon" },
+            { name: "Pluto", orbitalPeriodYears: 248.0, distanceFromSun: "5.9 billion km", icon: "♇", iconClass: "pluto-icon" },
         ];
 
         // Age calculator function
@@ -363,7 +399,7 @@
 
             planetAges.innerHTML = '';
 
-            celestialBodies.slice(1).forEach(planet => {
+            allBodies.forEach(planet => {
                 const planetAge = planet.orbitalPeriodYears > 0 ? (earthAge / planet.orbitalPeriodYears).toFixed(2) : 0;
                 const revolutions = planet.orbitalPeriodYears > 0 ? Math.floor(earthAge / planet.orbitalPeriodYears) : 0;
 
@@ -376,7 +412,7 @@
                         </div>
                         <div>
                             <h3 style="font-size:1.15rem; margin-bottom:0.15rem;">${planet.name}</h3>
-                            <p style="color:var(--purple-soft); font-size:0.95rem;">Age: ${planetAge} years</p>
+                            <p style="color:var(--accent); font-size:0.95rem;">Age: ${planetAge} years</p>
                         </div>
                     </div>
                     <div style="font-size:0.9rem; color:var(--text-secondary); line-height:1.6;">
@@ -405,55 +441,60 @@
                 const section = document.createElement('div');
                 section.className = 'planet-section';
 
-                const isReversed = index % 2 === 1;
-
                 section.innerHTML = `
-                    <div class="planet-info" style="padding:2.5rem;">
-                        <div class="flex items-center gap-3" style="margin-bottom:1.5rem;">
-                            <div class="planet-icon ${body.iconClass}">
-                                ${body.icon}
-                            </div>
-                            <h2 style="margin:0;">${body.name}</h2>
+                    <div class="planet-grid">
+                        <div class="planet-video">
+                            <video autoplay loop muted playsinline>
+                                <source src="${body.videoUrl}" type="video/mp4">
+                            </video>
                         </div>
-                        <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:1.5rem; font-size:1.05rem;">${body.description}</p>
+                        <div class="planet-info" style="padding:2rem;">
+                            <div class="flex items-center gap-3" style="margin-bottom:1.5rem;">
+                                <div class="planet-icon ${body.iconClass}">
+                                    ${body.icon}
+                                </div>
+                                <h2 style="margin:0;">${body.name}</h2>
+                            </div>
+                            <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:1.5rem; font-size:1.02rem;">${body.description}</p>
 
-                        <div class="facts-grid">
-                            <div class="fact-card">
-                                <h4>Diameter</h4>
-                                <p>${body.diameter}</p>
+                            <div class="facts-grid">
+                                <div class="fact-card">
+                                    <h4>Diameter</h4>
+                                    <p>${body.diameter}</p>
+                                </div>
+                                <div class="fact-card">
+                                    <h4>Distance from Sun</h4>
+                                    <p>${body.distanceFromSun}</p>
+                                </div>
+                                <div class="fact-card">
+                                    <h4>Orbital Period</h4>
+                                    <p>${body.orbitalPeriod}</p>
+                                </div>
+                                <div class="fact-card">
+                                    <h4>Rotation Period</h4>
+                                    <p>${body.rotationPeriod}</p>
+                                </div>
+                                <div class="fact-card">
+                                    <h4>Moons</h4>
+                                    <p>${body.moons}</p>
+                                </div>
+                                <div class="fact-card">
+                                    <h4>Temperature</h4>
+                                    <p>${body.temperature}</p>
+                                </div>
                             </div>
-                            <div class="fact-card">
-                                <h4>Distance from Sun</h4>
-                                <p>${body.distanceFromSun}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Orbital Period</h4>
-                                <p>${body.orbitalPeriod}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Rotation Period</h4>
-                                <p>${body.rotationPeriod}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Moons</h4>
-                                <p>${body.moons}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Temperature</h4>
-                                <p>${body.temperature}</p>
-                            </div>
-                        </div>
 
-                        <div style="margin-bottom:1rem;">
-                            <h4 style="color:var(--pink-accent); font-size:0.9rem; font-weight:600; margin-bottom:0.35rem;">Composition</h4>
-                            <p class="text-secondary">${body.composition}</p>
-                        </div>
+                            <div style="margin-bottom:1rem;">
+                                <h4 style="color:var(--accent); font-size:0.9rem; font-weight:600; margin-bottom:0.35rem;">Composition</h4>
+                                <p class="text-secondary">${body.composition}</p>
+                            </div>
 
-                        <div class="fun-facts">
-                            <h4>Fun Facts</h4>
-                            <ul>
-                                ${body.funFacts.map(fact => `<li>${fact}</li>`).join('')}
-                            </ul>
+                            <div class="fun-facts">
+                                <h4>Fun Facts</h4>
+                                <ul>
+                                    ${body.funFacts.map(fact => `<li>${fact}</li>`).join('')}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 `;
