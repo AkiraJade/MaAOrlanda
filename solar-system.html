@@ -441,61 +441,68 @@
                 const section = document.createElement('div');
                 section.className = 'planet-section';
 
+                const isReversed = index % 2 === 1;
+
+                const videoBlock = `
+                    <div class="planet-video">
+                        <video autoplay loop muted playsinline>
+                            <source src="${body.videoUrl}" type="video/mp4">
+                        </video>
+                    </div>`;
+
+                const infoBlock = `
+                    <div class="planet-info" style="padding:2rem;">
+                        <div class="flex items-center gap-3" style="margin-bottom:1.5rem;">
+                            <div class="planet-icon ${body.iconClass}">
+                                ${body.icon}
+                            </div>
+                            <h2 style="margin:0;">${body.name}</h2>
+                        </div>
+                        <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:1.5rem; font-size:1.02rem;">${body.description}</p>
+
+                        <div class="facts-grid">
+                            <div class="fact-card">
+                                <h4>Diameter</h4>
+                                <p>${body.diameter}</p>
+                            </div>
+                            <div class="fact-card">
+                                <h4>Distance from Sun</h4>
+                                <p>${body.distanceFromSun}</p>
+                            </div>
+                            <div class="fact-card">
+                                <h4>Orbital Period</h4>
+                                <p>${body.orbitalPeriod}</p>
+                            </div>
+                            <div class="fact-card">
+                                <h4>Rotation Period</h4>
+                                <p>${body.rotationPeriod}</p>
+                            </div>
+                            <div class="fact-card">
+                                <h4>Moons</h4>
+                                <p>${body.moons}</p>
+                            </div>
+                            <div class="fact-card">
+                                <h4>Temperature</h4>
+                                <p>${body.temperature}</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom:1rem;">
+                            <h4 style="color:var(--accent); font-size:0.9rem; font-weight:600; margin-bottom:0.35rem;">Composition</h4>
+                            <p class="text-secondary">${body.composition}</p>
+                        </div>
+
+                        <div class="fun-facts">
+                            <h4>Fun Facts</h4>
+                            <ul>
+                                ${body.funFacts.map(fact => `<li>${fact}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>`;
+
                 section.innerHTML = `
                     <div class="planet-grid">
-                        <div class="planet-video">
-                            <video autoplay loop muted playsinline>
-                                <source src="${body.videoUrl}" type="video/mp4">
-                            </video>
-                        </div>
-                        <div class="planet-info" style="padding:2rem;">
-                            <div class="flex items-center gap-3" style="margin-bottom:1.5rem;">
-                                <div class="planet-icon ${body.iconClass}">
-                                    ${body.icon}
-                                </div>
-                                <h2 style="margin:0;">${body.name}</h2>
-                            </div>
-                            <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:1.5rem; font-size:1.02rem;">${body.description}</p>
-
-                            <div class="facts-grid">
-                                <div class="fact-card">
-                                    <h4>Diameter</h4>
-                                    <p>${body.diameter}</p>
-                                </div>
-                                <div class="fact-card">
-                                    <h4>Distance from Sun</h4>
-                                    <p>${body.distanceFromSun}</p>
-                                </div>
-                                <div class="fact-card">
-                                    <h4>Orbital Period</h4>
-                                    <p>${body.orbitalPeriod}</p>
-                                </div>
-                                <div class="fact-card">
-                                    <h4>Rotation Period</h4>
-                                    <p>${body.rotationPeriod}</p>
-                                </div>
-                                <div class="fact-card">
-                                    <h4>Moons</h4>
-                                    <p>${body.moons}</p>
-                                </div>
-                                <div class="fact-card">
-                                    <h4>Temperature</h4>
-                                    <p>${body.temperature}</p>
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom:1rem;">
-                                <h4 style="color:var(--accent); font-size:0.9rem; font-weight:600; margin-bottom:0.35rem;">Composition</h4>
-                                <p class="text-secondary">${body.composition}</p>
-                            </div>
-
-                            <div class="fun-facts">
-                                <h4>Fun Facts</h4>
-                                <ul>
-                                    ${body.funFacts.map(fact => `<li>${fact}</li>`).join('')}
-                                </ul>
-                            </div>
-                        </div>
+                        ${isReversed ? infoBlock + videoBlock : videoBlock + infoBlock}
                     </div>
                 `;
 
