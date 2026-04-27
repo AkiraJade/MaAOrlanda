@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Solar System Render — a scientifically accurate 3D animation of the solar system created with Blender and Python scripting.">
+    <meta name="description"
+        content="Solar System Render — a scientifically accurate 3D animation of the solar system created with Blender and Python scripting.">
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <title>Solar System Render | Multimedia Portfolio</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
     <!-- Navbar -->
@@ -48,10 +51,14 @@
 
         <!-- Age Calculator Section -->
         <section class="age-calculator fade-up" style="margin-bottom:4rem;">
-            <h2 style="font-size:1.8rem; text-align:center; margin-bottom:0.75rem; position:relative; z-index:2;">Planetary Age Calculator</h2>
-            <p class="text-center" style="color:var(--text-secondary); margin-bottom:2rem; position:relative; z-index:2;">Enter your age in Earth years to discover how old you would be on other planets!</p>
+            <h2 style="font-size:1.8rem; text-align:center; margin-bottom:0.75rem; position:relative; z-index:2;">
+                Planetary Age Calculator</h2>
+            <p class="text-center"
+                style="color:var(--text-secondary); margin-bottom:2rem; position:relative; z-index:2;">Enter your age in
+                Earth years to discover how old you would be on other planets!</p>
 
-            <div class="flex justify-center items-center gap-2" style="margin-bottom:2rem; position:relative; z-index:2; flex-wrap:wrap;">
+            <div class="flex justify-center items-center gap-2"
+                style="margin-bottom:2rem; position:relative; z-index:2; flex-wrap:wrap;">
                 <input type="number" id="ageInput" class="age-input" placeholder="Enter your age" min="0" max="150">
                 <button onclick="calculateAges()" class="calculate-btn">
                     <i class="fas fa-calculator" style="margin-right:0.5rem;"></i>Calculate
@@ -84,11 +91,13 @@
             </div>
             <div class="text-secondary" style="line-height:1.75;">
                 <p style="margin-bottom:1rem;">
-                    This solar system animation combines artistic visualization with scientific accuracy. Each celestial body
+                    This solar system animation combines artistic visualization with scientific accuracy. Each celestial
+                    body
                     rotates on its axis and revolves around the Sun with astronomically accurate timing and axial tilts.
                 </p>
                 <p>
-                    The Python script handles orbital mechanics and positioning based on real astronomical data, ensuring
+                    The Python script handles orbital mechanics and positioning based on real astronomical data,
+                    ensuring
                     relative speeds and distances are accurate while maintaining visual clarity.
                 </p>
             </div>
@@ -111,7 +120,7 @@
                 <p>Get access to the complete Blender project, Python scripts, and high-resolution renders.</p>
                 <div class="btn-group">
                     <a href="https://drive.google.com/drive/folders/1Eq9G_Krttx3uCTkefcgT3JYXV9vlyQCO?usp=sharing"
-                       target="_blank" rel="noopener noreferrer" class="btn-glow btn-glow-white">
+                        target="_blank" rel="noopener noreferrer" class="btn-glow btn-glow-white">
                         <i class="fas fa-download"></i> Download Blender Project
                     </a>
                     <a href="rotoscoping.html" class="btn-glow btn-glow-dark">
@@ -127,7 +136,8 @@
         <div class="footer-inner">
             <p>&copy; <span id="current-year"></span> Orlanda, Ardee Jhade B.</p>
             <div class="footer-socials">
-                <a href="https://github.com/AkiraJade" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://github.com/AkiraJade" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i
+                        class="fab fa-github"></i></a>
                 <a href="mailto:jhadeorlanda117@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
             </div>
         </div>
@@ -428,7 +438,7 @@
         }
 
         // Allow Enter key
-        document.getElementById('ageInput').addEventListener('keypress', function(e) {
+        document.getElementById('ageInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') calculateAges();
         });
 
@@ -510,7 +520,7 @@
         }
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('current-year').textContent = new Date().getFullYear();
             generateCelestialBodies();
         });
@@ -523,4 +533,5 @@
         });
     </script>
 </body>
+
 </html>
