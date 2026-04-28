@@ -402,11 +402,7 @@ h1, h2, h3, h4 {
   background: var(--accent);
   color: #fff;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
-}
-
-.btn-glow-white:hover {
-  background: var(--accent-dark);
+  box-shadow: 0 2px 8px rgba(255, 183, 213, 0.2);
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
 }
@@ -496,7 +492,7 @@ h1, h2, h3, h4 {
 }
 
 .project-icon.pink-icon {
-  background: #D946EF;
+  background: var(--accent-light);
 }
 
 .tag {
@@ -516,14 +512,13 @@ h1, h2, h3, h4 {
 }
 
 .tag.pink {
-  background: rgba(217, 70, 239, 0.08);
-  color: #C026D3;
-  border-color: rgba(217, 70, 239, 0.12);
+  background: rgba(255, 183, 213, 0.08);
+  color: var(--accent);
+  border-color: rgba(255, 183, 213, 0.12);
 }
 
 .tag.pink:hover {
-  background: rgba(217, 70, 239, 0.14);
-}
+  background: rgba(255, 183, 213, 0.14);
 
 /* ---- Info Cards ---- */
 .info-icon {
@@ -942,32 +937,6 @@ h1, h2, h3, h4 {
 }
 
 /* ---- Solar System Page Specific ---- */
-.planet-section {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-smooth);
-}
-
-.planet-section:hover {
-  box-shadow: var(--shadow-md);
-}
-
-.planet-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  margin-right: 1rem;
-  flex-shrink: 0;
-  box-shadow: var(--shadow-sm);
-}
-
 /* Planet icon gradients — preserved from original */
 .sun-icon { background: linear-gradient(135deg, #FFA500, #FF4500); }
 .mercury-icon { background: linear-gradient(135deg, #8C7853, #A0522D); }
@@ -979,27 +948,6 @@ h1, h2, h3, h4 {
 .uranus-icon { background: linear-gradient(135deg, #4FD0E3, #87CEEB); }
 .neptune-icon { background: linear-gradient(135deg, #4169E1, #0000CD); }
 .pluto-icon { background: linear-gradient(135deg, #A0522D, #8B4513); }
-
-/* Fact cards inside planet sections */
-.fact-card {
-  background: var(--bg);
-  border-radius: var(--radius-sm);
-  padding: 1rem;
-  border: 1px solid var(--border);
-}
-
-.fact-card h4 {
-  color: var(--accent);
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-bottom: 0.35rem;
-  letter-spacing: 0;
-}
-
-.fact-card p {
-  color: var(--text-secondary);
-  font-size: 0.92rem;
-}
 
 /* ---- Age Calculator ---- */
 .age-calculator {
@@ -1173,7 +1121,7 @@ h1, h2, h3, h4 {
 
 /* ---- Utility Classes ---- */
 .text-purple { color: var(--accent); }
-.text-pink { color: #D946EF; }
+.text-pink { color: var(--accent); }
 .text-muted { color: var(--text-muted); }
 .text-secondary { color: var(--text-secondary); }
 .text-center { text-align: center; }
