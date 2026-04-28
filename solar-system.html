@@ -374,6 +374,14 @@
                 const section = document.createElement('div');
                 section.className = 'planet-section';
 
+                const showVideo = ["Mercury", "Earth", "Mars"].includes(body.name);
+
+                const videoBlock = showVideo ? `
+                    <div class="planet-video">
+                        <video autoplay loop muted playsinline>
+                            <source src="${body.videoUrl}" type="video/mp4">
+                        </video>
+                    </div>` : '';
 
                 const infoBlock = `
                     <div class="planet-info" style="padding:2rem;">
@@ -415,7 +423,7 @@
 
                     </div>`;
 
-                section.innerHTML = infoBlock;
+                section.innerHTML = videoBlock + infoBlock;
 
                 container.appendChild(section);
             });
