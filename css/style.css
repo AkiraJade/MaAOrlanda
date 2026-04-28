@@ -1091,18 +1091,11 @@ h1, h2, h3, h4 {
   display: none;
 }
 
-/* Solar system planet section grid */
 .planet-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (min-width: 1024px) {
-  .planet-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
 
 .planet-grid .planet-video {
   display: flex;

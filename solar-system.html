@@ -380,7 +380,6 @@
                 const section = document.createElement('div');
                 section.className = 'planet-section';
 
-                const isReversed = index % 2 === 1;
 
                 const videoBlock = `
                     <div class="planet-video">
@@ -431,7 +430,8 @@
 
                 section.innerHTML = `
                     <div class="planet-grid">
-                        ${isReversed ? infoBlock + videoBlock : videoBlock + infoBlock}
+                        ${videoBlock}
+                        ${infoBlock}
                     </div>
                 `;
 
