@@ -1262,4 +1262,461 @@ body::after {
     z-index: 150; /* above ::before/::after star layers */
 }
 
+/* Shared utility/layout classes used across pages */
+.hidden {
+    display: none !important;
+}
+.text-center {
+    text-align: center;
+}
+.flex {
+    display: flex;
+}
+.justify-center {
+    justify-content: center;
+}
+.items-center {
+    align-items: center;
+}
+.gap-1 {
+    gap: 0.35rem;
+}
+.gap-2 {
+    gap: 0.75rem;
+}
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+.mb-2 {
+    margin-bottom: 1rem;
+}
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+@media (max-width: 980px) {
+    .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 680px) {
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Accessible skip-link */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    z-index: 999;
+    background: var(--accent);
+    color: var(--midnight-ink);
+    padding: 0.45rem 0.75rem;
+    border-radius: 8px;
+}
+
+/* Shared cards/buttons/footer used by multiple pages */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+.back-link:hover {
+    color: var(--accent);
+    transform: translateX(-2px);
+}
+.overview-glass,
+.cta-glass {
+    padding: 1.75rem;
+}
+.overview-stat {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.overview-stat h3 {
+    color: var(--accent);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+}
+.overview-stat p {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+.btn-group {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+}
+.planet-age-card {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.03),
+        rgba(255, 255, 255, 0.01)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-xs);
+}
+.planet-nav-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+.planet-nav-label {
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+.footer-glass {
+    margin-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(6, 3, 18, 0.88);
+    backdrop-filter: blur(8px);
+}
+.footer-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.footer-inner p {
+    color: var(--text-secondary);
+}
+.footer-socials {
+    display: flex;
+    gap: 0.9rem;
+}
+.footer-socials a {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    transition: var(--transition-smooth);
+}
+.footer-socials a:hover {
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* Solar-system specific futuristic enhancement */
+body.solar-page .hero-glass {
+    border: 1px solid rgba(255, 183, 213, 0.16);
+    box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 183, 213, 0.06) inset;
+}
+body.solar-page .hero-glass h1 {
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+.solar-block {
+    position: relative;
+    overflow: hidden;
+}
+.solar-block::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        120deg,
+        transparent 25%,
+        rgba(255, 183, 213, 0.04) 50%,
+        transparent 75%
+    );
+}
+.solar-orbit-line {
+    position: absolute;
+    inset: auto -15% -42% -15%;
+    border: 1px dashed rgba(255, 183, 213, 0.15);
+    border-radius: 50%;
+    height: 280px;
+    pointer-events: none;
+    animation: orbitDrift 18s linear infinite;
+}
+@keyframes orbitDrift {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+@media (max-width: 900px) {
+    .footer-inner {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+/* Home + Rotoscoping shared sections */
+.home-hero-panel {
+    background: linear-gradient(
+        180deg,
+        rgba(18, 9, 34, 0.86),
+        rgba(8, 4, 22, 0.9)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+}
+.about-body {
+    padding: 0 1.25rem 3rem;
+    max-width: var(--content-max);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.about-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.profile-name {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+.profile-sub {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+}
+.profile-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    width: 100%;
+}
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    width: 100%;
+}
+.pr-key {
+    color: var(--text-muted);
+}
+.pr-val {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-align: right;
+}
+.home-section-head {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.home-section-head h2 {
+    font-size: clamp(1.6rem, 3.8vw, 2.3rem);
+}
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+}
+.project-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+.ps-card {
+    display: block;
+    text-decoration: none;
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(
+        180deg,
+        rgba(12, 6, 28, 0.9),
+        rgba(8, 4, 22, 0.92)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: var(--transition-smooth);
+}
+.ps-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-sm);
+    border-color: rgba(255, 183, 213, 0.1);
+}
+.ps-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+.ps-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+.ps-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 0.45rem;
+}
+.ps-desc {
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+.course-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    padding: 1.4rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.course-box h3 {
+    margin-bottom: 0.55rem;
+}
+.course-box p,
+.course-list {
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+.course-list {
+    padding-left: 1.2rem;
+}
+
+/* Rotoscoping page blocks */
+.roto-hero-title {
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.step-card {
+    background: linear-gradient(
+        180deg,
+        rgba(12, 6, 28, 0.9),
+        rgba(8, 4, 22, 0.92)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
+    transition: var(--transition-smooth);
+}
+.step-card:hover,
+.weekly-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-sm);
+}
+.step-number,
+.week-badge {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--midnight-ink);
+    font-weight: 700;
+}
+.process-image {
+    width: 100%;
+    border-radius: var(--radius-sm);
+}
+.stagger-children > * {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.6s var(--ease-smooth) forwards;
+}
+.stagger-children > *:nth-child(2n) {
+    animation-delay: 0.08s;
+}
+.stagger-children > *:nth-child(3n) {
+    animation-delay: 0.16s;
+}
+.weekly-card {
+    background: linear-gradient(
+        180deg,
+        rgba(12, 6, 28, 0.9),
+        rgba(8, 4, 22, 0.92)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition-smooth);
+}
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    overflow: hidden;
+}
+.video-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.card-body {
+    padding: 1rem;
+}
+.video-showcase {
+    background: linear-gradient(
+        180deg,
+        rgba(12, 6, 28, 0.9),
+        rgba(8, 4, 22, 0.92)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+.text-muted {
+    color: var(--text-muted);
+}
+.text-pink {
+    color: var(--accent);
+}
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.7s var(--ease-smooth) forwards;
+}
+
+@media (max-width: 980px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .project-summary-grid,
+    .course-box {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 640px) {
+    .about-body {
+        padding: 0 1rem 2.25rem;
+    }
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* End of file - Futuristic / Space themed stylesheet (midnight purple + sakura pink) */
