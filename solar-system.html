@@ -622,9 +622,7 @@
                         section.classList.add("active");
                     }
 
-                    const showVideo =
-                        body.videoUrl &&
-                        ["Mercury", "Earth", "Mars"].includes(body.name);
+                    const showVideo = Boolean(body.videoUrl);
                     const videoBlock = showVideo
                         ? `
                     <div class="planet-video">
