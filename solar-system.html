@@ -142,7 +142,6 @@
     <script>
         // Celestial bodies data
         const celestialBodies = [
-            /* HIDDEN: Sun (uncomment when ready)
             {
                 name: "Sun",
                 description: "The Sun is the star at the center of our solar system, a massive ball of hot plasma that provides the light and heat essential for life on Earth. It accounts for 99.86% of the total mass of the solar system and drives weather patterns, ocean currents, and the seasons across every planet in its orbit.",
@@ -159,7 +158,6 @@
                 orbitalPeriodYears: 0,
                 visible: true
             },
-            END HIDDEN */
             {
                 name: "Mercury",
                 description: "Mercury is the smallest planet in our solar system and the closest to the Sun. Despite its proximity to the Sun, it is not the hottest planet — that title belongs to Venus. Mercury has virtually no atmosphere to trap heat, causing extreme temperature swings from scorching 427°C during the day to a frigid -173°C at night.",
@@ -176,7 +174,6 @@
                 orbitalPeriodYears: 0.241,
                 visible: true
             },
-            /* HIDDEN: Venus (uncomment when ready)
             {
                 name: "Venus",
                 description: "Venus is the hottest planet in our solar system, with surface temperatures reaching 462°C — hot enough to melt lead. Its thick atmosphere is composed almost entirely of carbon dioxide, creating a runaway greenhouse effect. Venus rotates in the opposite direction to most planets, meaning the Sun rises in the west and sets in the east.",
@@ -193,7 +190,6 @@
                 orbitalPeriodYears: 0.615,
                 visible: true
             },
-            END HIDDEN */
             {
                 name: "Earth",
                 description: "Earth is the third planet from the Sun and the only known world to support life. Its surface is covered by 71% water, and it is shielded by a magnetic field that deflects harmful solar radiation. Earth's atmosphere is rich in nitrogen and oxygen, creating the perfect conditions for a diverse range of ecosystems spanning from deep ocean trenches to towering mountain ranges.",
@@ -226,7 +222,6 @@
                 orbitalPeriodYears: 1.881,
                 visible: true
             },
-            /* HIDDEN: Celestial bodies 6-10 (uncomment when ready)
             {
                 name: "Jupiter",
                 description: "Jupiter is the largest planet in our solar system, a gas giant so massive that over 1,300 Earths could fit inside it. Its iconic Great Red Spot is a colossal storm that has been raging for at least 350 years and is larger than Earth itself. Jupiter's powerful magnetic field and dozens of moons — including Europa, which may harbor a subsurface ocean — make it one of the most fascinating objects in our solar system.",
@@ -307,7 +302,6 @@
                 orbitalPeriodYears: 248.0,
                 visible: true
             },
-            END HIDDEN */
         ];
 
         // All bodies for the age calculator (including hidden ones)
@@ -381,13 +375,6 @@
                 section.className = 'planet-section';
 
 
-                const videoBlock = `
-                    <div class="planet-video">
-                        <video autoplay loop muted playsinline>
-                            <source src="${body.videoUrl}" type="video/mp4">
-                        </video>
-                    </div>`;
-
                 const infoBlock = `
                     <div class="planet-info" style="padding:2rem;">
                         <div class="flex items-center gap-3" style="margin-bottom:1.5rem;">
@@ -428,12 +415,7 @@
 
                     </div>`;
 
-                section.innerHTML = `
-                    <div class="planet-grid">
-                        ${videoBlock}
-                        ${infoBlock}
-                    </div>
-                `;
+                section.innerHTML = infoBlock;
 
                 container.appendChild(section);
             });
