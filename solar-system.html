@@ -163,6 +163,75 @@
                 </div>
             </section>
 
+            <!-- Blender Tutorial -->
+            <section class="section-wrapper fade-up" style="margin-bottom: 4rem">
+                <div class="section-title">
+                    <h2><span class="gradient-text">Blender Tutorial</span></h2>
+                    <p>
+                        Step-by-step workflow for creating a planet animation and
+                        publishing it to your website.
+                    </p>
+                </div>
+
+                <div class="grid-3">
+                    <div class="tool-card">
+                        <div class="eyebrow mb-1">Step 1</div>
+                        <h3 class="mb-1">Install BlenderKit</h3>
+                        <p class="text-secondary">
+                            Download BlenderKit, then open
+                            <strong>Edit &gt; Preferences &gt; Add-ons</strong>
+                            in Blender and enable
+                            <strong>BlenderKit</strong>.
+                        </p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="eyebrow mb-1">Step 2</div>
+                        <h3 class="mb-1">Import Planet + HDRI</h3>
+                        <p class="text-secondary">
+                            Press <strong>N</strong> to open the sidebar, go to
+                            the BlenderKit tab, then search for a
+                            <strong>planet model</strong> and an
+                            <strong>HDRI background</strong>.
+                        </p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="eyebrow mb-1">Step 3</div>
+                        <h3 class="mb-1">Add Animation Script</h3>
+                        <p class="text-secondary">
+                            Open the <strong>Scripting</strong> workspace, paste
+                            a Python script for orbital/rotation animation, and
+                            run it to generate movement.
+                        </p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="eyebrow mb-1">Step 4</div>
+                        <h3 class="mb-1">Frame the Camera</h3>
+                        <p class="text-secondary">
+                            Set your camera angle and focus so the planet stays
+                            centered and cinematic throughout the animation.
+                        </p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="eyebrow mb-1">Step 5</div>
+                        <h3 class="mb-1">Render the Animation</h3>
+                        <p class="text-secondary">
+                            Configure render settings (resolution, FPS, output
+                            format), then press <strong>Ctrl + F12</strong> or
+                            use <strong>Render &gt; Render Animation</strong>.
+                        </p>
+                    </div>
+                    <div class="tool-card">
+                        <div class="eyebrow mb-1">Step 6</div>
+                        <h3 class="mb-1">Publish on Your Website</h3>
+                        <p class="text-secondary">
+                            Export the final video, upload/embed it in your
+                            project page, and add a short description of your
+                            workflow and tools used.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             <!-- Celestial Bodies -->
             <section class="content-section">
                 <div class="section-title fade-up">
@@ -265,6 +334,8 @@
                     icon: "☀️",
                     iconClass: "sun-icon",
                     orbitalPeriodYears: 0,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Sun here.",
                     visible: true,
                 },
                 {
@@ -282,6 +353,8 @@
                     icon: "☿",
                     iconClass: "mercury-icon",
                     orbitalPeriodYears: 0.241,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Mercury here.",
                     visible: true,
                 },
                 {
@@ -299,6 +372,8 @@
                     icon: "♀",
                     iconClass: "venus-icon",
                     orbitalPeriodYears: 0.615,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Venus here.",
                     visible: true,
                 },
                 {
@@ -316,6 +391,8 @@
                     icon: "🌍",
                     iconClass: "earth-icon",
                     orbitalPeriodYears: 1.0,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Earth here.",
                     visible: true,
                 },
                 {
@@ -333,6 +410,8 @@
                     icon: "♂",
                     iconClass: "mars-icon",
                     orbitalPeriodYears: 1.881,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Mars here.",
                     visible: true,
                 },
                 {
@@ -350,6 +429,8 @@
                     icon: "♃",
                     iconClass: "jupiter-icon",
                     orbitalPeriodYears: 11.86,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Jupiter here.",
                     visible: true,
                 },
                 {
@@ -367,6 +448,8 @@
                     icon: "♄",
                     iconClass: "saturn-icon",
                     orbitalPeriodYears: 29.46,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Saturn here.",
                     visible: true,
                 },
                 {
@@ -384,6 +467,8 @@
                     icon: "♅",
                     iconClass: "uranus-icon",
                     orbitalPeriodYears: 84.01,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Uranus here.",
                     visible: true,
                 },
                 {
@@ -401,6 +486,8 @@
                     icon: "♆",
                     iconClass: "neptune-icon",
                     orbitalPeriodYears: 164.8,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Neptune here.",
                     visible: true,
                 },
                 {
@@ -418,6 +505,8 @@
                     icon: "♇",
                     iconClass: "pluto-icon",
                     orbitalPeriodYears: 248.0,
+                    scriptUsed:
+                        "// Add your Blender/Python script for Pluto here.",
                     visible: true,
                 },
             ];
@@ -551,6 +640,24 @@
 
             let activePlanetIndex = 0;
 
+            function syncPlanetStageHeight() {
+                const stage = document.querySelector(".planet-stage");
+                const activeSection = document.querySelector(
+                    ".planet-section.active",
+                );
+                if (!stage || !activeSection) return;
+
+                // Desktop: sections are absolute overlays, so we manually size the stage.
+                // Mobile/tablet: sections return to normal flow, so height should be automatic.
+                if (window.matchMedia("(max-width: 1024px)").matches) {
+                    stage.style.height = "auto";
+                    return;
+                }
+
+                const nextHeight = Math.ceil(activeSection.scrollHeight + 12);
+                stage.style.height = `${nextHeight}px`;
+            }
+
             function showPlanet(index) {
                 const sections = document.querySelectorAll(".planet-section");
                 const buttons = document.querySelectorAll(".planet-button");
@@ -560,6 +667,7 @@
                 // Pause/play videos on state change and adjust z-index so active section is visually on top.
                 sections.forEach((section, sectionIndex) => {
                     const video = section.querySelector("video");
+                    const prompt = section.querySelector(".planet-prompt");
                     if (sectionIndex === index) {
                         section.classList.add("active");
                         section.setAttribute("aria-hidden", "false");
@@ -594,6 +702,9 @@
                                 /* ignore */
                             }
                         }
+                        if (prompt) {
+                            prompt.classList.add("hidden");
+                        }
                     }
                 });
 
@@ -608,6 +719,7 @@
                 // Do not programmatically move focus here (avoids unexpected scrolling).
                 // Keep active index so keyboard handlers still work.
                 activePlanetIndex = index;
+                syncPlanetStageHeight();
             }
 
             // Generate celestial bodies and planet navigation
@@ -632,57 +744,134 @@
                     </div>`
                         : "";
 
-                    const infoBlock = `
-                    <div class="planet-panel planet-info">
-                        ${videoBlock}
-                        <div class="planet-header">
-                            <div class="planet-icon ${body.iconClass}">
-                                ${body.icon}
-                            </div>
-                            <div>
-                                <h2>${body.name}</h2>
-                            </div>
-                        </div>
-                        <p>${body.description}</p>
-                    </div>`;
-
-                    const dataBlock = `
-                    <div class="planet-panel planet-details">
-                        <div class="facts-grid">
-                            <div class="fact-card">
-                                <h4>Diameter</h4>
-                                <p>${body.diameter}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Distance from Sun</h4>
-                                <p>${body.distanceFromSun}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Orbital Period</h4>
-                                <p>${body.orbitalPeriod}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Rotation Period</h4>
-                                <p>${body.rotationPeriod}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Moons</h4>
-                                <p>${body.moons}</p>
-                            </div>
-                            <div class="fact-card">
-                                <h4>Temperature</h4>
-                                <p>${body.temperature}</p>
-                            </div>
-                        </div>
-                    </div>`;
-
                     section.innerHTML = `
-                    <div class="planet-grid">
-                        ${infoBlock}
-                        ${dataBlock}
+                    <div class="celestial-layout">
+                        <aside class="celestial-card celestial-side">
+                            <div class="celestial-kicker">
+                                <span class="planet-icon ${body.iconClass}" style="width:36px;height:36px;font-size:1.05rem;border-radius:10px;">${body.icon}</span>
+                                Description
+                            </div>
+                            <div class="mini-divider" aria-hidden="true"></div>
+                            <p>${body.description}</p>
+                            <button type="button" class="mini-btn learn-more-btn">
+                                <i class="fas fa-rocket"></i> Learn More
+                            </button>
+                        </aside>
+
+                        <article class="celestial-card celestial-center">
+                            <header class="celestial-title">
+                                <h2>${body.name}</h2>
+                                <p>Explore this celestial body and discover key orbital and physical properties.</p>
+                            </header>
+                            <div class="celestial-video-frame">
+                                ${showVideo ? `
+                                <video autoplay loop muted playsinline>
+                                    <source src="${body.videoUrl}" type="video/mp4">
+                                </video>` : `<div style="padding:2rem;text-align:center;color:var(--text-secondary);">No video available.</div>`}
+                            </div>
+                            <div class="celestial-stats">
+                                <div class="celestial-stat">
+                                    <span class="label">Diameter</span>
+                                    <span class="value">${body.diameter}</span>
+                                </div>
+                                <div class="celestial-stat">
+                                    <span class="label">Orbital Period</span>
+                                    <span class="value">${body.orbitalPeriod}</span>
+                                </div>
+                                <div class="celestial-stat">
+                                    <span class="label">Moons</span>
+                                    <span class="value">${body.moons}</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <aside class="celestial-card celestial-side">
+                            <h3>Other Details</h3>
+                            <div class="mini-divider" aria-hidden="true"></div>
+                            <div class="celestial-fact-stack">
+                                <div class="celestial-fact-item">
+                                    <div class="celestial-fact-icon"><i class="fas fa-ruler-combined"></i></div>
+                                    <div class="celestial-fact-copy">
+                                        <span class="fact-label">Distance from Sun</span>
+                                        <span class="fact-value">${body.distanceFromSun}</span>
+                                    </div>
+                                </div>
+                                <div class="celestial-fact-item">
+                                    <div class="celestial-fact-icon"><i class="fas fa-sync-alt"></i></div>
+                                    <div class="celestial-fact-copy">
+                                        <span class="fact-label">Rotation Period</span>
+                                        <span class="fact-value">${body.rotationPeriod}</span>
+                                    </div>
+                                </div>
+                                <div class="celestial-fact-item">
+                                    <div class="celestial-fact-icon"><i class="fas fa-thermometer-half"></i></div>
+                                    <div class="celestial-fact-copy">
+                                        <span class="fact-label">Temperature</span>
+                                        <span class="fact-value">${body.temperature}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>`;
+
+                    section.innerHTML += `
+                    <div class="planet-prompt hidden" role="dialog" aria-modal="false" aria-label="${body.name} details and script">
+                        <div class="planet-prompt-backdrop"></div>
+                        <div class="planet-prompt-box">
+                            <button type="button" class="planet-prompt-close" aria-label="Close prompt">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div class="planet-prompt-grid">
+                                <div class="planet-prompt-info">
+                                    <h3>All Information</h3>
+                                    <ul class="all-info-list">
+                                        <li><strong>Name:</strong> ${body.name}</li>
+                                        <li><strong>Diameter:</strong> ${body.diameter}</li>
+                                        <li><strong>Distance from Sun:</strong> ${body.distanceFromSun}</li>
+                                        <li><strong>Orbital Period:</strong> ${body.orbitalPeriod}</li>
+                                        <li><strong>Rotation Period:</strong> ${body.rotationPeriod}</li>
+                                        <li><strong>Moons:</strong> ${body.moons}</li>
+                                        <li><strong>Temperature:</strong> ${body.temperature}</li>
+                                    </ul>
+                                </div>
+                                <div class="planet-prompt-script">
+                                    <label class="script-label" for="script-${index}">
+                                        Script Used for ${body.name}
+                                    </label>
+                                    <pre
+                                        id="script-${index}"
+                                        class="planet-script-box"
+                                    >${body.scriptUsed || "// Add your Blender/Python script in the celestialBodies array for this planet."}</pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>`;
 
                     container.appendChild(section);
+
+                    const learnMoreBtn = section.querySelector(".learn-more-btn");
+                    const promptBox = section.querySelector(".planet-prompt");
+                    const promptClose = section.querySelector(
+                        ".planet-prompt-close",
+                    );
+                    const promptBackdrop = section.querySelector(
+                        ".planet-prompt-backdrop",
+                    );
+                    if (learnMoreBtn && promptBox) {
+                        learnMoreBtn.addEventListener("click", () => {
+                            promptBox.classList.remove("hidden");
+                        });
+                    }
+                    if (promptClose && promptBox) {
+                        promptClose.addEventListener("click", () => {
+                            promptBox.classList.add("hidden");
+                        });
+                    }
+                    if (promptBackdrop && promptBox) {
+                        promptBackdrop.addEventListener("click", () => {
+                            promptBox.classList.add("hidden");
+                        });
+                    }
 
                     const button = document.createElement("button");
                     button.type = "button";
@@ -717,6 +906,7 @@
                     new Date().getFullYear();
                 generateCelestialBodies();
                 showPlanet(activePlanetIndex);
+                window.addEventListener("resize", syncPlanetStageHeight);
             });
 
             // Mobile nav toggle
