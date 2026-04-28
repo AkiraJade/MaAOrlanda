@@ -53,6 +53,33 @@
 
     /* Layout tokens */
     --content-max: 1280px;
+    --container-padding: 1.25rem;
+
+    /* Legacy compatibility variables (kept for inline styles and older pages) */
+    /* These map old names used in inline styles to the new design tokens */
+    --panel: var(--card);
+    --panel-strong: var(--card-strong);
+    --line: rgba(
+        255,
+        255,
+        255,
+        0.06
+    ); /* lightweight divider color used previously */
+    --muted: var(--text-muted);
+    --accent-2: var(--accent);
+    --border: 1px solid rgba(255, 255, 255, 0.06);
+    --border-soft: rgba(255, 255, 255, 0.04);
+    --glass-bg: rgba(20, 9, 46, 0.88);
+    --glass-bg-strong: rgba(18, 8, 45, 0.98);
+    --border-glass: rgba(255, 255, 255, 0.12);
+    --neo-shadow-light: rgba(255, 183, 213, 0.12);
+    --neo-shadow-dark: rgba(0, 0, 0, 0.24);
+    --neo-raised: 0 8px 30px rgba(0, 0, 0, 0.3);
+    --neo-inset: inset 0 1px 6px rgba(255, 255, 255, 0.04);
+    --neo-flat: 0 1px 3px rgba(0, 0, 0, 0.16);
+    --midnight-deepest: #05010e;
+    --midnight-deep: #0a041a;
+    --midnight-base: var(--midnight-purple);
 }
 
 /* ---- Global reset & body ---- */
@@ -143,6 +170,91 @@ h4 {
     color: var(--accent);
     letter-spacing: 0.08em;
     text-transform: uppercase;
+}
+
+/* ---- Page Containers & Layout ---- */
+.page-container {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    width: 100%;
+}
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255, 183, 213, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(180, 124, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    animation: heroGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlow {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+.hero-content {
+    padding: 2rem var(--container-padding);
+    position: relative;
+}
+
+.content-section {
+    padding: 0 var(--container-padding);
+}
+
+.section-wrapper {
+    background: linear-gradient(
+        180deg,
+        rgba(24, 12, 40, 0.6),
+        rgba(8, 4, 22, 0.4)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+    margin: 2rem 0;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+}
+
+.section-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255, 183, 213, 0.1);
+}
+
+.section-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.section-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent));
 }
 
 /* ---- Cards / Glass surfaces ---- */
@@ -282,21 +394,88 @@ h4 {
 /* ---- Hero / Landing: half / half layout tweaks ----
    User asked landing page to be "half half".
    The main landing hero uses `.about-hero` (index.html). Keep columns equal on large screens.
+   Also provide a `.hero-glass` variant used by standalone hero sections (large full-width card appearance)
+   and `.glow-ring` defaults for decorative rings used across pages.
+ */
+/* tighter hero: constrain width, reduce padding for large screens, center the block */
+.hero-glass {
+    position: relative;
+    max-width: 1100px;
+    margin: 1.5rem auto 2rem;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    text-align: center;
+    background: linear-gradient(
+        180deg,
+        rgba(24, 12, 40, 0.95),
+        rgba(8, 4, 22, 0.86)
+    );
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    z-index: 2;
+    box-sizing: border-box;
+}
+
+/* Glow ring defaults — reduced blur/opactiy for less visual bleeding on smaller screens.
+   Individual pages may still position and size `.glow-ring` elements inline; these defaults
+   are tuned to avoid overpowering the hero while keeping the decorative effect.
 */
+.glow-ring {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    display: block;
+    mix-blend-mode: screen;
+    filter: blur(12px);
+    opacity: 0.72;
+    transform: translateZ(0);
+    transition:
+        opacity 0.8s var(--ease-smooth),
+        transform 0.8s var(--ease-smooth);
+}
+.glow-ring.purple {
+    background: radial-gradient(
+        circle at center,
+        rgba(180, 124, 255, 0.14),
+        rgba(180, 124, 255, 0.02)
+    );
+}
+.glow-ring.magenta {
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 183, 213, 0.14),
+        rgba(255, 183, 213, 0.02)
+    );
+}
+
+/* ensure glow rings scale more gracefully on small viewports */
+@media (max-width: 640px) {
+    .glow-ring {
+        filter: blur(10px);
+        opacity: 0.55;
+    }
+    .hero-glass {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+}
+
+/* about-hero: left text / right profile. Slightly reduced internal padding so hero-glass looks correct when stacked */
 .about-hero {
     max-width: var(--content-max);
-    margin: 2.5rem auto;
-    padding: 2.5rem;
+    margin: 2.25rem auto;
+    padding: 1.75rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
+    gap: 2rem;
     align-items: center;
 }
 @media (max-width: 900px) {
     .about-hero {
         grid-template-columns: 1fr;
-        padding: 1.5rem;
-        gap: 1.25rem;
+        padding: 1.25rem;
+        gap: 1rem;
     }
 }
 
@@ -383,10 +562,15 @@ h4 {
 }
 
 /* ---- Content container & sections ---- */
-.container {
+.container,
+main,
+main#main,
+main#maincontent {
     max-width: var(--content-max);
+    width: 100%;
     margin: 0 auto;
     padding: 0 1.25rem;
+    box-sizing: border-box;
 }
 .content-section {
     padding: 3rem 0;
@@ -439,19 +623,63 @@ h4 {
 }
 
 /* planet-section: shows/hides smoothly */
+/* A stable stage area holds planet panels so switching planets does not reflow page content.
+   Each .planet-section becomes an absolutely-positioned overlay inside .planet-stage on wide
+   viewports. On small screens we fall back to normal document flow to preserve scrolling behavior. */
+.planet-stage {
+    position: relative;
+    width: 100%;
+    max-width: var(--content-max);
+    margin: 0 auto;
+    min-height: 480px; /* height of the stage; adjust as needed for your video/aspect */
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Panels overlay inside the stage; inactive panels are hidden visually and from pointer events.
+   This prevents the page layout from shifting when a new planet is selected. */
 .planet-section {
+    position: absolute;
+    inset: 0 0 0 0; /* fill the stage */
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(6px) scale(0.997);
     transition:
         opacity 0.42s var(--ease-smooth),
         transform 0.42s var(--ease-smooth);
     display: block;
-    max-width: var(--content-max);
-    margin: 1rem auto;
+    pointer-events: none;
+    z-index: 1;
+    padding: 0.6rem 1rem; /* internal spacing inside the panel area */
+    box-sizing: border-box;
 }
+
+/* Active panel sits on top and accepts interactions. */
 .planet-section.active {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    z-index: 2;
+}
+
+/* Responsive fallback: on smaller viewports, panels stack vertically (normal flow).
+   This ensures mobile users can scroll through content and videos behave naturally. */
+@media (max-width: 1024px) {
+    .planet-stage {
+        min-height: auto;
+    }
+    .planet-section {
+        position: relative;
+        inset: auto;
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+        transition: none;
+        padding: 1rem 0;
+    }
+    .planet-section + .planet-section {
+        margin-top: 1.25rem;
+    }
 }
 
 /* grid: left description, right facts
@@ -771,11 +999,27 @@ h4 {
     );
     border: 1px solid rgba(255, 255, 255, 0.03);
     transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+.tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 183, 213, 0.02), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 .tool-card:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
     border-color: rgba(255, 183, 213, 0.06);
+}
+.tool-card:hover::before {
+    opacity: 1;
 }
 .tool-icon {
     font-size: 1.8rem;
@@ -841,7 +1085,8 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    z-index: 0;
+    /* place star layer behind page content */
+    z-index: -1;
     pointer-events: none;
     /* layered radial gradients create a soft distant starfield */
     background-image:
@@ -905,7 +1150,8 @@ body::after {
     content: "";
     position: fixed;
     inset: 0;
-    z-index: 0;
+    /* place secondary layer behind content as well */
+    z-index: -1;
     pointer-events: none;
     background-image: radial-gradient(
         transparent 30%,

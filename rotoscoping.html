@@ -35,30 +35,29 @@
   </nav>
 
 <style>
-  /* ── About page specific ── */
+  /* Rotoscoping page — cleaned and aligned with global theme variables */
+  /* Use global tokens (card, text-secondary, etc.) to avoid duplication */
   .about-hero {
-    padding: 4.5rem 2rem 3rem;
+    max-width: var(--content-max);
+    margin: 1.5rem auto;
+    padding: 1.5rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    gap: 1.75rem;
     align-items: center;
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
   }
   .about-hero-left h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 5vw, 3.2rem);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin: 0 0 0.8rem;
-    color: var(--text);
+    line-height: 1.12;
+    margin: 0 0 0.6rem;
+    color: var(--text-primary);
   }
   .about-hero-left p {
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.7;
-    margin: 0 0 1.5rem;
+    margin: 0 0 1rem;
   }
   .about-pills {
     display: flex;
@@ -72,69 +71,69 @@
     text-transform: uppercase;
     padding: 0.3rem 0.8rem;
     border-radius: 99px;
-    border: 1px solid var(--line);
-    color: var(--muted);
-    background: var(--panel);
+    border: 1px solid rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.02);
   }
-  /* Profile card */
+
+  /* Profile card (use global card tokens) */
   .profile-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
+    background: var(--card);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
-    padding: 2rem;
+    padding: 1.6rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
   }
   .profile-avatar {
-    width: 80px;
-    height: 80px;
+    width: 84px;
+    height: 84px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--accent);
-    margin-bottom: 0.4rem;
-    flex-shrink: 0;
-    display: block;
+    border: 3px solid var(--accent);
   }
   .profile-name {
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--text);
+    color: var(--text-primary);
     margin: 0;
   }
   .profile-sub {
-    font-size: 0.88rem;
-    color: var(--muted);
+    font-size: 0.92rem;
+    color: var(--text-secondary);
     margin: 0;
   }
   .profile-divider {
     border: none;
-    border-top: 1px solid var(--line);
-    margin: 0.4rem 0;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin: 0.6rem 0;
   }
   .profile-row {
     display: flex;
     justify-content: space-between;
-    font-size: 0.86rem;
+    font-size: 0.9rem;
     gap: 0.5rem;
   }
-  .pr-key { color: var(--muted); }
-  .pr-val { color: var(--text); font-weight: 600; text-align: right; }
+  .pr-key { color: var(--text-muted); }
+  .pr-val { color: var(--text-primary); font-weight: 600; text-align: right; }
+
   /* Main content */
   .about-body {
-    padding: 0 2rem 4rem;
-    max-width: 1100px;
+    padding: 0 1.25rem 3rem;
+    max-width: var(--content-max);
     margin: 0 auto;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.25rem;
   }
   .about-divider {
     border: none;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(255,255,255,0.04);
     margin: 0;
   }
+
   /* Tools grid */
   .tools-grid {
     display: grid;
@@ -142,207 +141,417 @@
     gap: 1rem;
   }
   .tool-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.03);
     border-radius: var(--radius-lg);
-    padding: 1.2rem 1.3rem;
+    padding: 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    transition: border-color 0.15s;
+    gap: 0.5rem;
+    transition: var(--transition-smooth);
   }
-  .tool-card:hover { border-color: var(--accent-2); }
-  .tool-icon { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .tool-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-sm); border-color: rgba(255,183,213,0.06); }
+  .tool-icon { font-size: 1.8rem; margin-bottom: 0.3rem; color: var(--accent); }
   .tool-name {
     font-size: 0.98rem;
     font-weight: 700;
-    color: var(--text);
+    color: var(--text-primary);
     margin: 0;
   }
   .tool-desc {
-    font-size: 0.82rem;
-    color: var(--muted);
+    font-size: 0.88rem;
+    color: var(--text-secondary);
     line-height: 1.55;
     margin: 0;
+  /* Section headers */
+  .home-section-head {
+    text-align: center;
+    margin-bottom: 2rem;
   }
-  /* Project summary cards */
-  .project-summary-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
-  }
-  .ps-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 1.4rem 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s, transform 0.2s;
-    display: block;
-  }
-  .ps-card:hover { border-color: var(--accent-2); transform: translateY(-3px); }
-  .ps-card.roto:hover { border-color: var(--accent); }
-  .ps-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
-  .ps-tag {
-    font-size: 0.7rem;
+  .home-section-head p {
+    font-size: 0.78rem;
     font-weight: 700;
+    color: var(--accent);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent-2);
-    display: block;
-    margin-bottom: 0.3rem;
-  }
-  .ps-card.roto .ps-tag { color: var(--accent); }
-  .ps-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text);
     margin: 0 0 0.5rem;
   }
-  .ps-desc {
-    font-size: 0.86rem;
-    color: var(--muted);
-    line-height: 1.6;
+  .home-section-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--text-primary);
     margin: 0;
   }
-  /* Course context */
-  .course-box {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-xl);
-    padding: 2rem 2.2rem;
+
+  /* Process steps */
+  .grid-3 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
   }
-  .course-box h3 {
-    font-size: 1rem;
+  .step-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: var(--transition-smooth);
+  }
+  .step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-sm); border-color: rgba(255,183,213,0.06); }
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--accent);
+    color: var(--midnight-ink);
+    border-radius: 50%;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--accent-2);
+    margin-bottom: 1rem;
+  }
+  .step-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
     margin: 0 0 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
   }
-  .course-box p {
+  .step-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+  }
+  .process-image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    display: block;
+  }
+
+  /* Weekly progress videos */
+  .content-section {
+    padding: 3rem 1.25rem;
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+  .section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .section-title h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+  }
+  .section-title p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+  }
+  .stagger-children > * {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+  .weekly-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition-smooth);
+  }
+  .weekly-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-sm); border-color: rgba(255,183,213,0.06); }
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+  }
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  .card-body {
+    padding: 1.25rem;
+  }
+  .flex {
+    display: flex;
+  }
+  .items-center {
+    align-items: center;
+  }
+  .gap-1 {
+    gap: 0.25rem;
+  }
+  .mb-1 {
+    margin-bottom: 0.25rem;
+  }
+  .week-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: var(--accent);
+    color: var(--midnight-ink);
+    border-radius: 50%;
     font-size: 0.9rem;
-    color: var(--muted);
-    line-height: 1.7;
+    font-weight: 700;
+  }
+  .weekly-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
     margin: 0;
   }
-  .course-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+  .weekly-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0.5rem 0 0;
   }
-  .course-list li {
-    font-size: 0.88rem;
-    color: var(--muted);
+
+  /* Video showcase */
+  .video-showcase {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .video-showcase .video-wrapper {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+
+  /* Call to action */
+  .cta-glass {
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .cta-glass h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem;
+  }
+  .cta-glass p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0 0 1.5rem;
+  }
+  .btn-group {
     display: flex;
-    align-items: flex-start;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-glow {
+    display: inline-flex;
+    align-items: center;
     gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    border: 1px solid var(--glass-border);
   }
-  .course-list li::before {
-    content: '→';
-    color: var(--accent-2);
-    flex-shrink: 0;
-    margin-top: 0.05rem;
+  .btn-glow-white {
+    background: var(--card);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
   }
-  @media (max-width: 800px) {
-    .about-hero { grid-template-columns: 1fr; padding: 3rem 1rem 2rem; gap: 1.5rem; }
+  .btn-glow-white:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow);
+    border-color: var(--accent);
+  }
+  .btn-glow-dark {
+    background: var(--accent);
+    color: var(--midnight-ink);
+  }
+  .btn-glow-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow);
+  }
+
+  /* Footer */
+  .footer-glass {
+    background: var(--card);
+    border-top: 1px solid var(--glass-border);
+    padding: 2rem 1.25rem;
+    margin-top: 3rem;
+  }
+  .footer-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-inner p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 1rem;
+  }
+  .footer-socials a {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    transition: var(--transition-smooth);
+  }
+  .footer-socials a:hover {
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Utility classes */
+  .text-muted { color: var(--text-muted); }
+  .text-pink { color: var(--accent); }
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: reveal 0.8s ease-out forwards;
+  }
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 900px) {
+    .about-hero { grid-template-columns: 1fr; padding: 1rem; gap: 1rem; }
     .tools-grid { grid-template-columns: 1fr 1fr; }
-    .project-summary-grid { grid-template-columns: 1fr; }
-    .course-box { grid-template-columns: 1fr; gap: 1.2rem; }
-    .about-body { padding-left: 1rem; padding-right: 1rem; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .about-body { padding: 0 1rem 2rem; gap: 1.25rem; }
+    .content-section { padding: 2rem 1rem; }
+    .btn-group { flex-direction: column; align-items: center; }
   }
   @media (max-width: 480px) {
     .tools-grid { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; text-align: center; }
   }
 </style>
 
   <!-- Main Content -->
   <main id="main">
-    <!-- ── HERO ── -->
-    <section class="about-hero">
-      <div class="about-hero-left reveal">
-        <p class="eyebrow">Rotoscoping Project</p>
-        <h1>Rotoscoping Progress</h1>
-        <p>Follow my comprehensive journey through the art of rotoscoping from week 3 to week 13. Each video showcases the progression of skills and techniques learned throughout this creative process.</p>
-        <div class="about-pills">
-          <span class="about-pill">BSIT-S-2A</span>
-          <span class="about-pill">TUP-Taguig</span>
-          <span class="about-pill">After Effects</span>
-          <span class="about-pill">CapCut</span>
-          <span class="about-pill">Rotoscoping</span>
-        </div>
-      </div>
-      <!-- Profile card -->
-      <div class="profile-card reveal">
-        <img class="profile-avatar" src="images/adi.png" alt="Orlanda, Ardee Jhade B." />
-        <p class="profile-name">Orlanda, Ardee Jhade B.</p>
-        <p class="profile-sub">BSIT — Bachelor of Science in Information Technology</p>
-        <hr class="profile-divider" />
-        <div class="profile-row">
-          <span class="pr-key">University</span>
-          <span class="pr-val">TUP – Taguig</span>
-        </div>
-        <div class="profile-row">
-          <span class="pr-key">Section</span>
-          <span class="pr-val">BSIT-S-2A</span>
-        </div>
-        <div class="profile-row">
-          <span class="pr-key">Course focus</span>
-          <span class="pr-val">Multimedia</span>
-        </div>
-        <div class="profile-row">
-          <span class="pr-key">Projects</span>
-          <span class="pr-val">Rotoscoping · Solar System</span>
-        </div>
-      </div>
-    </section>
-    <!-- ── BODY ── -->
-    <div class="about-body">
-      <hr class="about-divider" />
-      <!-- Tools & Software -->
-      <div>
-        <div class="home-section-head reveal" style="margin-bottom:1.5rem">
-          <p class="eyebrow">Tools & Software</p>
-          <h2>What was used to create this rotoscoping project</h2>
-        </div>
-        <div class="tools-grid">
-          <div class="tool-card reveal">
-            <span class="tool-icon">🎬</span>
-            <p class="tool-name">Adobe After Effects</p>
-            <p class="tool-desc">Industry-standard motion graphics software used for rotoscoping with the Roto Brush tool, layer-based compositing, and final rendering.</p>
-          </div>
-          <div class="tool-card reveal">
-            <span class="tool-icon">✂️</span>
-            <p class="tool-name">CapCut</p>
-            <p class="tool-desc">User-friendly video editor used for adding backgrounds, text overlays, and effects before exporting the final output.</p>
-          </div>
-          <div class="tool-card reveal">
-            <span class="tool-icon">📹</span>
-            <p class="tool-name">Video Reference</p>
-            <p class="tool-desc">Original footage used as the basis for rotoscoping, providing the motion and timing for the Roto Brush selections.</p>
-          </div>
-          <div class="tool-card reveal">
-            <span class="tool-icon">🌐</span>
-            <p class="tool-name">HTML / CSS / JS</p>
-            <p class="tool-desc">This portfolio site is built with vanilla HTML, CSS, and JavaScript — hosted on GitHub Pages with no build tools.</p>
+    <div class="page-container">
+      <!-- ── HERO ── -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <div class="about-hero">
+            <div class="about-hero-left reveal">
+              <p class="eyebrow">Rotoscoping Project</p>
+              <h1>Rotoscoping Progress</h1>
+              <p>Follow my comprehensive journey through the art of rotoscoping from week 3 to week 13. Each video showcases the progression of skills and techniques learned throughout this creative process.</p>
+              <div class="about-pills">
+                <span class="about-pill">BSIT-S-2A</span>
+                <span class="about-pill">TUP-Taguig</span>
+                <span class="about-pill">After Effects</span>
+                <span class="about-pill">CapCut</span>
+                <span class="about-pill">Rotoscoping</span>
+              </div>
+            </div>
+            <!-- Profile card -->
+            <div class="profile-card reveal">
+              <img class="profile-avatar" src="images/adi.png" alt="Orlanda, Ardee Jhade B." />
+              <p class="profile-name">Orlanda, Ardee Jhade B.</p>
+              <p class="profile-sub">BSIT — Bachelor of Science in Information Technology</p>
+              <hr class="profile-divider" />
+              <div class="profile-row">
+                <span class="pr-key">University</span>
+                <span class="pr-val">TUP – Taguig</span>
+              </div>
+              <div class="profile-row">
+                <span class="pr-key">Section</span>
+                <span class="pr-val">BSIT-S-2A</span>
+              </div>
+              <div class="profile-row">
+                <span class="pr-key">Course focus</span>
+                <span class="pr-val">Multimedia</span>
+              </div>
+              <div class="profile-row">
+                <span class="pr-key">Projects</span>
+                <span class="pr-val">Rotoscoping · Solar System</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <hr class="about-divider" />
-      <!-- Projects -->
-      <div>
-        <div class="home-section-head reveal" style="margin-bottom:1.5rem">
-          <p class="eyebrow">Rotoscoping Process</p>
-          <h2>The Rotoscoping Process</h2>
-        </div>
-        <div class="grid-3 stagger-children">
+      </section>
+
+      <!-- ── BODY ── -->
+      <div class="content-section">
+        <div class="about-body">
+          <hr class="about-divider" />
+          <!-- Tools & Software -->
+          <div class="section-wrapper">
+            <div class="home-section-head reveal" style="margin-bottom:1.5rem">
+              <p class="eyebrow">Tools & Software</p>
+              <h2>What was used to create this rotoscoping project</h2>
+            </div>
+            <div class="tools-grid">
+              <div class="tool-card reveal">
+                <span class="tool-icon">🎬</span>
+                <p class="tool-name">Adobe After Effects</p>
+                <p class="tool-desc">Industry-standard motion graphics software used for rotoscoping with the Roto Brush tool, layer-based compositing, and final rendering.</p>
+              </div>
+              <div class="tool-card reveal">
+                <span class="tool-icon">✂️</span>
+                <p class="tool-name">CapCut</p>
+                <p class="tool-desc">User-friendly video editor used for adding backgrounds, text overlays, and effects before exporting the final output.</p>
+              </div>
+              <div class="tool-card reveal">
+                <span class="tool-icon">📹</span>
+                <p class="tool-name">Video Reference</p>
+                <p class="tool-desc">Original footage used as the basis for rotoscoping, providing the motion and timing for the Roto Brush selections.</p>
+              </div>
+              <div class="tool-card reveal">
+                <span class="tool-icon">🌐</span>
+                <p class="tool-name">HTML / CSS / JS</p>
+                <p class="tool-desc">This portfolio site is built with vanilla HTML, CSS, and JavaScript — hosted on GitHub Pages with no build tools.</p>
+              </div>
+            </div>
+          </div>
+          <hr class="about-divider" />
+          <!-- Projects -->
+          <div class="section-wrapper">
+            <div class="home-section-head reveal" style="margin-bottom:1.5rem">
+              <p class="eyebrow">Rotoscoping Process</p>
+              <h2>The Rotoscoping Process</h2>
+            </div>
+            <div class="grid-3 stagger-children">
         <!-- Step 1 -->
         <div class="step-card">
           <div class="step-number">1</div>
@@ -423,15 +632,15 @@
           </div>
         </div>
       </div>
-    </section>
+      <hr class="about-divider" />
 
-    <!-- Weekly Progress Videos Section -->
-    <section class="content-section">
-      <div class="section-title fade-up">
-        <h2><span class="gradient-text">Weekly Progress</span></h2>
-      </div>
+      <!-- Weekly Progress Videos Section -->
+      <div class="section-wrapper">
+        <div class="section-title fade-up">
+          <h2><span class="gradient-text">Weekly Progress</span></h2>
+        </div>
 
-      <div class="grid-3 stagger-children">
+        <div class="grid-3 stagger-children">
 
         <!-- Week 1 -->
         <div class="weekly-card">
@@ -481,8 +690,7 @@
           </div>
         </div>
 
-        <!-- HIDDEN: Weeks 4-12 (uncomment when ready)
-        <div class="weekly-card">
+        <!-- Week 4 -->
           <div class="video-wrapper">
             <iframe src="https://www.youtube.com/embed/MPOleKRqBj4" title="Rotoscoping Week 4"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -616,60 +824,56 @@
             <p>The final output — background editing, text overlays, and publishing.</p>
           </div>
         </div>
-        END HIDDEN -->
 
       </div>
-    </section>
 
-    <!-- HIDDEN: Final Output Section (uncomment when ready)
-    <section class="content-section">
-      <div class="section-title fade-up">
-        <h2><span class="gradient-text">Final Output</span></h2>
-        <p>The completed rotoscoping animation — the culmination of 12 weeks of work.</p>
-      </div>
-
-      <div class="video-showcase fade-up" style="max-width:700px; margin:0 auto;">
-        <div class="video-wrapper">
-          <iframe src="https://www.youtube.com/embed/xCp2jvmRJ-o" title="Rotoscoping Final Output"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
+      <!-- Final Output Section -->
+      <div class="section-wrapper">
+        <div class="section-title fade-up">
+          <h2><span class="gradient-text">Final Output</span></h2>
+          <p>The completed rotoscoping animation — the culmination of 12 weeks of work.</p>
         </div>
-        <div class="card-body" style="padding:1.5rem; text-align:center;">
-          <h3 style="font-size:1.2rem; margin-bottom:0.4rem;">Completed Rotoscope Animation</h3>
-          <p class="text-muted" style="font-size:0.9rem;">The finished product featuring background editing, text overlays, and full rotoscoped animation — ready for publishing.</p>
-          <p class="text-muted" style="font-size:0.78rem; margin-top:0.8rem; font-style:italic; opacity:0.8;">This video is for educational purposes only. No copyright infringement is intended. All rights belong to their respective owners.</p>
-        </div>
-      </div>
-    </section>
-    END HIDDEN -->
 
-    <!-- Reference Video Section -->
-    <section class="content-section">
-      <div class="section-title fade-up">
-        <h2><span class="gradient-text">Reference Video</span></h2>
-        <p>The original video used as the reference for this rotoscoping project.</p>
-      </div>
-
-      <div class="video-showcase fade-up" style="max-width:700px; margin:0 auto;">
-        <div class="video-wrapper">
-          <iframe src="https://www.youtube.com/embed/miASODNYrXQ" title="Rotoscoping Reference Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <div class="card-body" style="padding:1.5rem; text-align:center;">
-          <h3 style="font-size:1.2rem; margin-bottom:0.4rem;">Original Reference Footage</h3>
-          <p class="text-muted" style="font-size:0.9rem;">The source material traced frame-by-frame to create the
-            rotoscope animation.</p>
-          <p class="text-muted" style="font-size:0.78rem; margin-top:0.8rem; font-style:italic; opacity:0.8;">This video is for educational purposes only. No copyright infringement is intended. All rights belong to their respective owners.</p>
+        <div class="video-showcase fade-up" style="max-width:700px; margin:0 auto;">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/xCp2jvmRJ-o" title="Rotoscoping Final Output"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="card-body" style="padding:1.5rem; text-align:center;">
+            <h3 style="font-size:1.2rem; margin-bottom:0.4rem;">Completed Rotoscope Animation</h3>
+            <p class="text-muted" style="font-size:0.9rem;">The finished product featuring background editing, text overlays, and full rotoscoped animation — ready for publishing.</p>
+            <p class="text-muted" style="font-size:0.78rem; margin-top:0.8rem; font-style:italic; opacity:0.8;">This video is for educational purposes only. No copyright infringement is intended. All rights belong to their respective owners.</p>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- Call to Action -->
-    <section class="content-section fade-up">
-      <div class="cta-glass">
+      <!-- Reference Video Section -->
+      <div class="section-wrapper">
+        <div class="section-title fade-up">
+          <h2><span class="gradient-text">Reference Video</span></h2>
+          <p>The original video used as the reference for this rotoscoping project.</p>
+        </div>
+
+        <div class="video-showcase fade-up" style="max-width:700px; margin:0 auto;">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/miASODNYrXQ" title="Rotoscoping Reference Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="card-body" style="padding:1.5rem; text-align:center;">
+            <h3 style="font-size:1.2rem; margin-bottom:0.4rem;">Original Reference Footage</h3>
+            <p class="text-muted" style="font-size:0.9rem;">The source material traced frame-by-frame to create the
+              rotoscope animation.</p>
+            <p class="text-muted" style="font-size:0.78rem; margin-top:0.8rem; font-style:italic; opacity:0.8;">This video is for educational purposes only. No copyright infringement is intended. All rights belong to their respective owners.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Call to Action -->
+      <div class="cta-glass fade-up">
         <h2>Explore More Projects</h2>
         <p>Continue your journey through my multimedia portfolio and discover more creative works.</p>
         <div class="btn-group">
@@ -681,7 +885,8 @@
           </a>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
   </main>
 
   <!-- Footer -->
