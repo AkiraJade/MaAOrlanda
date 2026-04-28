@@ -654,13 +654,66 @@
                     return;
                 }
 
-                const nextHeight = Math.ceil(activeSection.scrollHeight + 12);
+                const content = activeSection.querySelector(".celestial-layout");
+                const sectionStyles = window.getComputedStyle(activeSection);
+                const sectionPaddingY =
+                    (parseFloat(sectionStyles.paddingTop) || 0) +
+                    (parseFloat(sectionStyles.paddingBottom) || 0);
+                const contentHeight = content
+                    ? content.getBoundingClientRect().height
+                    : activeSection.getBoundingClientRect().height;
+                const nextHeight = Math.ceil(contentHeight + sectionPaddingY + 8);
                 stage.style.height = `${nextHeight}px`;
             }
 
             function showPlanet(index) {
                 const sections = document.querySelectorAll(".planet-section");
                 const buttons = document.querySelectorAll(".planet-button");
+
+                const playVideoSafely = (videoEl, retries = 2) => {
+                    if (!videoEl) return;
+                    videoEl.muted = true;
+                    videoEl.playsInline = true;
+
+                    const tryPlay = () => {
+                        try {
+                            const playPromise = videoEl.play();
+                            if (
+                                playPromise &&
+                                typeof playPromise.then === "function"
+                            ) {
+                                playPromise.catch(() => {
+                                    if (retries > 0) {
+                                        retries -= 1;
+                                        setTimeout(tryPlay, 120);
+                                    }
+                                });
+                            }
+                        } catch (err) {
+                            if (retries > 0) {
+                                retries -= 1;
+                                setTimeout(tryPlay, 120);
+                            }
+                        }
+                    };
+
+                    if (videoEl.readyState < 2) {
+                        try {
+                            videoEl.load();
+                        } catch (err) {
+                            /* ignore load errors */
+                        }
+                        const onCanPlay = () => {
+                            videoEl.removeEventListener("canplay", onCanPlay);
+                            tryPlay();
+                        };
+                        videoEl.addEventListener("canplay", onCanPlay, {
+                            once: true,
+                        });
+                    } else {
+                        tryPlay();
+                    }
+                };
 
                 // Toggle active class for sections and buttons without affecting page scroll.
                 // Sections are positioned inside a stable .planet-stage so switching does not reflow the page.
@@ -674,16 +727,7 @@
                         section.style.pointerEvents = "auto";
                         section.style.zIndex = 2;
                         if (video) {
-                            try {
-                                const p = video.play();
-                                if (p && typeof p.then === "function") {
-                                    p.catch(() => {
-                                        /* ignore autoplay block */
-                                    });
-                                }
-                            } catch (err) {
-                                /* ignore */
-                            }
+                            playVideoSafely(video);
                         }
                     } else {
                         section.classList.remove("active");
@@ -738,7 +782,7 @@
                     const videoBlock = showVideo
                         ? `
                     <div class="planet-video">
-                        <video autoplay loop muted playsinline>
+                        <video loop muted playsinline preload="metadata">
                             <source src="${body.videoUrl}" type="video/mp4">
                         </video>
                     </div>`
@@ -765,7 +809,7 @@
                             </header>
                             <div class="celestial-video-frame">
                                 ${showVideo ? `
-                                <video autoplay loop muted playsinline>
+                                <video loop muted playsinline preload="metadata">
                                     <source src="${body.videoUrl}" type="video/mp4">
                                 </video>` : `<div style="padding:2rem;text-align:center;color:var(--text-secondary);">No video available.</div>`}
                             </div>
