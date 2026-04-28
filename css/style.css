@@ -1092,10 +1092,16 @@ h1, h2, h3, h4 {
 }
 
 .planet-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
 }
 
+@media (min-width: 1024px) {
+  .planet-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 
 .planet-grid .planet-video {
   display: flex;

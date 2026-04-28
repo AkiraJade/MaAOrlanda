@@ -423,7 +423,15 @@
 
                     </div>`;
 
-                section.innerHTML = videoBlock + infoBlock;
+                if (showVideo) {
+                    section.innerHTML = `
+                        <div class="planet-grid">
+                            ${videoBlock}
+                            ${infoBlock}
+                        </div>`;
+                } else {
+                    section.innerHTML = infoBlock;
+                }
 
                 container.appendChild(section);
             });
