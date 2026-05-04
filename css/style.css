@@ -1899,12 +1899,79 @@ body.solar-page .hero-glass h1 {
 }
 .script-label {
     display: block;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0;
     font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--accent-light);
+}
+.script-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.45rem;
+    flex-wrap: wrap;
+}
+.copy-script-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(157, 127, 255, 0.3);
+    background: linear-gradient(
+        135deg,
+        rgba(157, 127, 255, 0.12),
+        rgba(255, 183, 213, 0.08)
+    );
+    color: var(--accent-light, #c8b6ff);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.copy-script-btn i {
+    font-size: 0.72rem;
+    transition: transform 0.25s ease;
+}
+.copy-script-btn:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 183, 213, 0.22),
+        rgba(157, 127, 255, 0.18)
+    );
+    border-color: rgba(255, 183, 213, 0.45);
+    color: var(--accent, #ffb7d5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 183, 213, 0.15),
+                0 2px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.copy-script-btn:hover i {
+    transform: scale(1.15);
+}
+.copy-script-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.copy-script-btn.copied {
+    background: linear-gradient(
+        135deg,
+        rgba(100, 220, 130, 0.2),
+        rgba(72, 199, 142, 0.12)
+    );
+    border-color: rgba(100, 220, 130, 0.45);
+    color: #7af09a;
+    box-shadow: 0 4px 14px rgba(100, 220, 130, 0.12),
+                0 2px 6px rgba(0, 0, 0, 0.25);
 }
 .planet-script-box {
     width: 100%;

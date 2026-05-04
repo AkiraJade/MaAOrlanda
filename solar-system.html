@@ -306,10 +306,15 @@
                             <i class="fas fa-times"></i>
                         </button>
                         <div class="planet-prompt-script" style="width:100%;">
-                            <label class="script-label">
-                                <i class="fas fa-code" style="margin-right:0.5rem;"></i>
-                                Full Solar System Python Script
-                            </label>
+                            <div class="script-header">
+                                <label class="script-label">
+                                    <i class="fas fa-code" style="margin-right:0.5rem;"></i>
+                                    Full Solar System Python Script
+                                </label>
+                                <button type="button" class="copy-script-btn" data-target="solarScriptContent" aria-label="Copy script">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
                             <pre id="solarScriptContent" class="planet-script-box">Loading script...</pre>
                         </div>
                     </div>
@@ -894,9 +899,14 @@
                                     </ul>
                                 </div>
                                 <div class="planet-prompt-script">
-                                    <label class="script-label" for="script-${index}">
-                                        Script Used for ${body.name}
-                                    </label>
+                                    <div class="script-header">
+                                        <label class="script-label" for="script-${index}">
+                                            Script Used for ${body.name}
+                                        </label>
+                                        <button type="button" class="copy-script-btn" data-target="script-${index}" aria-label="Copy script">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                    </div>
                                     <pre
                                         id="script-${index}"
                                         class="planet-script-box"
@@ -1050,6 +1060,44 @@
                 if (closeBtn) closeBtn.addEventListener("click", closeModal);
                 if (backdrop) backdrop.addEventListener("click", closeModal);
             })();
+
+            // === Copy-to-clipboard for all script boxes ===
+            document.addEventListener("click", (e) => {
+                const btn = e.target.closest(".copy-script-btn");
+                if (!btn) return;
+                const targetId = btn.getAttribute("data-target");
+                const pre = document.getElementById(targetId);
+                if (!pre) return;
+                const text = pre.textContent;
+                if (!text || text === "Loading script...") return;
+                navigator.clipboard.writeText(text).then(() => {
+                    const icon = btn.querySelector("i");
+                    const origHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    btn.classList.add("copied");
+                    setTimeout(() => {
+                        btn.innerHTML = origHTML;
+                        btn.classList.remove("copied");
+                    }, 1800);
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const ta = document.createElement("textarea");
+                    ta.value = text;
+                    ta.style.position = "fixed";
+                    ta.style.opacity = "0";
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(ta);
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    btn.classList.add("copied");
+                    const origHTML2 = '<i class="fas fa-copy"></i> Copy';
+                    setTimeout(() => {
+                        btn.innerHTML = origHTML2;
+                        btn.classList.remove("copied");
+                    }, 1800);
+                });
+            });
         </script>
     </body>
 </html>
