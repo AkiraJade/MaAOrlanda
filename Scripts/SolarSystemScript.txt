@@ -1,0 +1,558 @@
+import bpy
+import math
+import random
+from mathutils import Vector
+
+scene = bpy.context.scene
+scene.frame_start = 1
+scene.frame_end = 2100
+
+# =========================
+# CLEANUP
+# =========================
+for obj in list(bpy.data.objects):
+    if (obj.name.startswith("Orbit_") or
+        obj.name.startswith("Asteroid") or
+        obj.name.startswith("Label_")):
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+bpy.context.scene.frame_set(1)
+print("🧹 Cleaned up!")
+
+# =========================
+# CREATE ORBIT RING
+# =========================
+def create_orbit_ring(name, radius):
+    bpy.ops.curve.primitive_bezier_circle_add(
+        radius=radius, location=(0, 0, 0)
+    )
+    ring = bpy.context.object
+    ring.name = f"Orbit_{name}"
+    ring.data.bevel_depth = 0.05
+    ring.data.bevel_resolution = 4
+    ring.data.resolution_u = 256
+    mat = bpy.data.materials.new(name=f"Orbit_Mat_{name}")
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    nodes.clear()
+    emission = nodes.new("ShaderNodeEmission")
+    emission.inputs["Color"].default_value = (0.7, 0.82, 1.0, 1.0)
+    emission.inputs["Strength"].default_value = 0.7
+    output = nodes.new("ShaderNodeOutputMaterial")
+    mat.node_tree.links.new(
+        emission.outputs["Emission"],
+        output.inputs["Surface"]
+    )
+    ring.data.materials.append(mat)
+
+# =========================
+# ANIMATE PLANET
+# =========================
+def animate_planet(obj, distance, orbit_speed,
+                   spin_speed, size, tilt=(0, 0, 0)):
+    obj.animation_data_clear()
+    obj.scale = (size, size, size)
+    obj.visible_shadow = False
+    obj.location = (distance, 0, 0)
+    obj.rotation_mode = 'XYZ'
+
+    for frame in range(1, 2101):
+        angle = math.radians(frame * orbit_speed)
+        obj.location.x = distance * math.cos(angle)
+        obj.location.y = distance * math.sin(angle)
+        obj.location.z = 0
+        obj.keyframe_insert(data_path="location", frame=frame)
+
+    obj.rotation_euler = (
+        math.radians(tilt[0]),
+        math.radians(tilt[1]),
+        0
+    )
+    obj.keyframe_insert(data_path="rotation_euler", frame=1)
+    obj.rotation_euler = (
+        math.radians(tilt[0]),
+        math.radians(tilt[1]),
+        math.radians(360 * spin_speed)
+    )
+    obj.keyframe_insert(data_path="rotation_euler", frame=500)
+    print(f"✅ {obj.name} | Distance={distance} | Size={size}")
+
+# =========================
+# CREATE MOON
+# =========================
+def create_moon(name, parent_dist, parent_speed,
+                orbit_radius, orbit_speed, size, color):
+    existing = bpy.data.objects.get(name)
+    if existing:
+        bpy.data.objects.remove(existing, do_unlink=True)
+
+    bpy.ops.mesh.primitive_uv_sphere_add(
+        segments=32, ring_count=16,
+        radius=0.3, location=(parent_dist, 0, 0)
+    )
+    moon = bpy.context.object
+    moon.name = name
+    moon.scale = (size, size, size)
+    moon.visible_shadow = False
+
+    mat = bpy.data.materials.new(name=f"{name}_Mat")
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    nodes.clear()
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.85
+    output = nodes.new("ShaderNodeOutputMaterial")
+    mat.node_tree.links.new(
+        bsdf.outputs["BSDF"],
+        output.inputs["Surface"]
+    )
+    moon.data.materials.append(mat)
+
+    moon.animation_data_clear()
+    for frame in range(1, 2101):
+        parent_angle = math.radians(frame * parent_speed)
+        px = parent_dist * math.cos(parent_angle)
+        py = parent_dist * math.sin(parent_angle)
+        moon_angle = math.radians(frame * orbit_speed)
+        moon.location.x = px + orbit_radius * math.cos(moon_angle)
+        moon.location.y = py + orbit_radius * math.sin(moon_angle)
+        moon.location.z = 0
+        moon.keyframe_insert(data_path="location", frame=frame)
+    print(f"✅ {name} orbiting!")
+
+# =========================
+# CREATE ASTEROID BELT
+# =========================
+def create_asteroid_belt(count=300, inner=95, outer=115):
+    random.seed(42)
+    mat = bpy.data.materials.new(name="Asteroid_Mat")
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    nodes.clear()
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.inputs["Base Color"].default_value = (0.32, 0.29, 0.26, 1.0)
+    bsdf.inputs["Roughness"].default_value = 0.97
+    output = nodes.new("ShaderNodeOutputMaterial")
+    mat.node_tree.links.new(
+        bsdf.outputs["BSDF"],
+        output.inputs["Surface"]
+    )
+    for i in range(count):
+        distance = random.uniform(inner, outer)
+        start_angle = random.uniform(0, 360)
+        orbit_speed = random.uniform(0.35, 0.95)
+        size = random.uniform(0.08, 0.25)
+        z_offset = random.uniform(-1.5, 1.5)
+
+        bpy.ops.mesh.primitive_ico_sphere_add(
+            subdivisions=1,
+            radius=0.15,
+            location=(distance, 0, z_offset)
+        )
+        asteroid = bpy.context.object
+        asteroid.name = f"Asteroid_{i:03d}"
+        asteroid.scale = (size, size, size)
+        asteroid.visible_shadow = False
+        asteroid.data.materials.append(mat)
+
+        asteroid.animation_data_clear()
+        for frame in range(1, 2101):
+            angle = math.radians(
+                start_angle + frame * orbit_speed
+            )
+            asteroid.location.x = distance * math.cos(angle)
+            asteroid.location.y = distance * math.sin(angle)
+            asteroid.location.z = z_offset
+            asteroid.keyframe_insert(
+                data_path="location", frame=frame
+            )
+
+        if (i + 1) % 100 == 0:
+            print(f"⏳ Asteroids: {i+1}/{count}")
+    print(f"✅ {count} asteroids!")
+
+# =========================
+# CREATE TEXT LABEL
+# =========================
+def create_text_material(name, color):
+    mat = bpy.data.materials.new(name=f"TextMat_{name}")
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    nodes.clear()
+    emission = nodes.new("ShaderNodeEmission")
+    emission.inputs["Color"].default_value = color
+    emission.inputs["Strength"].default_value = 2.0
+    output = nodes.new("ShaderNodeOutputMaterial")
+    mat.node_tree.links.new(
+        emission.outputs["Emission"],
+        output.inputs["Surface"]
+    )
+    return mat
+
+def create_label(shot_name, display_name,
+                 start, end, cam, color):
+    bpy.ops.object.text_add(location=(0, 0, 0))
+    text_obj = bpy.context.object
+    text_obj.name = f"Label_{shot_name}"
+    text_obj.data.body = display_name
+    text_obj.data.size = 3.0
+    text_obj.data.align_x = 'CENTER'
+    text_obj.data.align_y = 'CENTER'
+    text_obj.data.extrude = 0.1
+
+    mat = create_text_material(shot_name, color)
+    text_obj.data.materials.append(mat)
+
+    if cam:
+        text_obj.parent = cam
+        text_obj.location = (0, 0, -25)
+        text_obj.rotation_euler = (0, 0, 0)
+
+    # Hide by default
+    text_obj.hide_viewport = True
+    text_obj.hide_render = True
+    text_obj.keyframe_insert(data_path="hide_viewport", frame=1)
+    text_obj.keyframe_insert(data_path="hide_render", frame=1)
+
+    # Show during shot
+    text_obj.hide_viewport = False
+    text_obj.hide_render = False
+    text_obj.keyframe_insert(
+        data_path="hide_viewport", frame=start
+    )
+    text_obj.keyframe_insert(
+        data_path="hide_render", frame=start
+    )
+
+    # Hide after shot
+    text_obj.hide_viewport = True
+    text_obj.hide_render = True
+    text_obj.keyframe_insert(
+        data_path="hide_viewport", frame=end + 1
+    )
+    text_obj.keyframe_insert(
+        data_path="hide_render", frame=end + 1
+    )
+    text_obj.keyframe_insert(
+        data_path="hide_viewport", frame=2100
+    )
+    text_obj.keyframe_insert(
+        data_path="hide_render", frame=2100
+    )
+
+    # Set CONSTANT interpolation
+    if text_obj.animation_data and text_obj.animation_data.action:
+        action = text_obj.animation_data.action
+        try:
+            for layer in action.layers:
+                for strip in layer.strips:
+                    for channelbag in strip.channelbags:
+                        for fcurve in channelbag.fcurves:
+                            for kp in fcurve.keyframe_points:
+                                kp.interpolation = 'CONSTANT'
+        except:
+            pass
+
+    print(f"✅ Label: {display_name} | {start}-{end}")
+
+# =========================
+# SUN SETUP
+# =========================
+sun = bpy.data.objects.get("The Sun")
+if sun is None:
+    sun = bpy.data.objects.get("Sun")
+if sun:
+    sun.location = (0, 0, 0)
+    sun.scale = (2.5, 2.5, 2.5)
+    sun.visible_shadow = False
+    sun.animation_data_clear()
+    sun.rotation_euler = (0, 0, 0)
+    sun.keyframe_insert(data_path="rotation_euler", frame=1)
+    sun.rotation_euler = (0, 0, math.radians(360 * 0.8))
+    sun.keyframe_insert(data_path="rotation_euler", frame=500)
+    print("✅ Sun set!")
+
+# =========================
+# PLANET DATA
+# Correct orbit speeds!
+# =========================
+BASE = 0.8
+
+planets = [
+    # (Name,   Dist, OrbitSpd, SpinSpd,       Size,      Tilt)
+    ("Mercury",  35,   8.0,     0.5,  BASE*0.38,      (0,    0, 0)),
+    ("Venus",    52,   3.2,     0.4,  BASE*0.95,      (3,    0, 0)),
+    ("Earth",    70,   2.0,     1.0,  BASE*1.00,      (23.4, 0, 0)),
+    ("Mars",     88,   1.06,    0.9,  BASE*0.53,      (25,   0, 0)),
+    ("Jupiter", 125,   0.17,    2.0,  0.88,           (3.1,  0, 0)),
+    ("Saturn",  162,   0.068,   1.8,  BASE*3.0,       (26.7,15, 0)),
+    ("Uranus",  200,   0.024,   1.2,  BASE*1.5,       (97.8, 0, 0)),
+    ("Neptune", 238,   0.012,   1.1,  BASE*1.45,      (28.3, 0, 0)),
+]
+
+# BUILD ALL PLANETS
+for name, distance, orbit_speed, spin_speed, size, tilt in planets:
+    obj = bpy.data.objects.get(name)
+    if obj is None:
+        print(f"⚠️ '{name}' not found!")
+        continue
+    create_orbit_ring(name, distance)
+    animate_planet(obj, distance, orbit_speed, spin_speed, size, tilt)
+
+# =========================
+# ALL MOONS
+# =========================
+create_moon("Moon",       70,  2.0,   4.0,  15,  0.22,
+            (0.75, 0.75, 0.75, 1.0))
+create_moon("Phobos",     88,  1.06,  3.0,  20,  0.08,
+            (0.55, 0.48, 0.45, 1.0))
+create_moon("Deimos",     88,  1.06,  5.0,  12,  0.06,
+            (0.60, 0.55, 0.52, 1.0))
+create_moon("Io",        125,  0.17,  6.0,  18,  0.20,
+            (0.92, 0.78, 0.45, 1.0))
+create_moon("Europa",    125,  0.17,  8.0,  13,  0.18,
+            (0.82, 0.80, 0.85, 1.0))
+create_moon("Ganymede",  125,  0.17, 10.0,  10,  0.25,
+            (0.68, 0.65, 0.62, 1.0))
+create_moon("Callisto",  125,  0.17, 12.0,   7,  0.22,
+            (0.48, 0.45, 0.42, 1.0))
+create_moon("Titan",     162,  0.068, 7.0,  11,  0.22,
+            (0.85, 0.72, 0.55, 1.0))
+create_moon("Rhea",      162,  0.068, 9.0,   8,  0.16,
+            (0.78, 0.78, 0.78, 1.0))
+create_moon("Enceladus", 162,  0.068,11.0,   6,  0.12,
+            (0.92, 0.94, 0.96, 1.0))
+create_moon("Titania",   200,  0.024, 6.0,   9,  0.16,
+            (0.75, 0.75, 0.78, 1.0))
+create_moon("Oberon",    200,  0.024, 8.0,   6,  0.14,
+            (0.55, 0.52, 0.50, 1.0))
+create_moon("Triton",    238,  0.012, 6.0,  -6,  0.15,
+            (0.72, 0.68, 0.75, 1.0))
+
+print("✅ All moons added!")
+
+# ASTEROID BELT
+create_asteroid_belt(count=300, inner=95, outer=115)
+
+# =========================
+# LIGHTS
+# =========================
+for obj in list(bpy.data.objects):
+    if obj.type == 'LIGHT':
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 0))
+sun_light = bpy.context.object
+sun_light.name = "SolarLight"
+sun_light.data.energy = 8000000
+sun_light.data.use_shadow = False
+
+bpy.ops.object.light_add(type='SUN', location=(50, 80, 150))
+ambient = bpy.context.object
+ambient.name = "AmbientLight"
+ambient.data.energy = 0.8
+ambient.data.use_shadow = False
+
+# =========================
+# CAMERA SETUP
+# =========================
+cam = bpy.data.objects.get("IntroCamera")
+if cam is None:
+    bpy.ops.object.camera_add()
+    cam = bpy.context.object
+    cam.name = "IntroCamera"
+
+cam.animation_data_clear()
+cam.rotation_mode = 'XYZ'
+scene.camera = cam
+
+planet_orbits = {
+    "Sun":          (0,    0),
+    "Mercury":      (35,   8.0),
+    "Venus":        (52,   3.2),
+    "Earth":        (70,   2.0),
+    "Mars":         (88,   1.06),
+    "AsteroidBelt": (106,  0.6),
+    "Jupiter":      (125,  0.17),
+    "Saturn":       (162,  0.068),
+    "Uranus":       (200,  0.024),
+    "Neptune":      (238,  0.012),
+}
+
+def get_pos(name, frame):
+    if name == "Sun":
+        return Vector((0, 0, 0))
+    if name not in planet_orbits:
+        return Vector((0, 0, 0))
+    dist, spd = planet_orbits[name]
+    angle = math.radians(frame * spd)
+    return Vector((
+        dist * math.cos(angle),
+        dist * math.sin(angle),
+        0
+    ))
+
+shots = [
+    # (subject,      start, back, side, height, lens, moons)
+    ("Sun",           1,   40,   0,   20,  40, False),
+    ("Mercury",      61,   22,   8,   10,  55, False),
+    ("Venus",       121,   24,   9,   11,  52, False),
+    ("Earth",       181,   26,  10,   13,  48, True),
+    ("Mars",        241,   24,   9,   11,  50, True),
+    ("AsteroidBelt",301,  120,  20,   60,  32, False),
+    ("Jupiter",     361,   55,  15,   27,  40, True),
+    ("Saturn",      421,   52,  14,   26,  40, True),
+    ("Uranus",      481,   45,  12,   22,  42, True),
+    ("Neptune",     541,   42,  11,   20,  42, True),
+]
+
+print("🎬 Building camera shots...")
+
+for shot in shots:
+    subject, start, cam_back, cam_side, height, lens, has_moons = shot
+    end = start + 59
+    extra = 1.3 if has_moons else 1.0
+
+    for frame in range(start, end + 1):
+        target = get_pos(subject, frame)
+        progress = (frame - start) / 59.0
+        ease = (1 - math.cos(progress * math.pi)) / 2
+        dolly = ease * 3
+
+        cx = target.x + cam_side * extra
+        cy = target.y - (cam_back * extra) + dolly
+        cz = target.z + height * extra
+
+        cam.location = Vector((cx, cy, cz))
+        cam.keyframe_insert(
+            data_path="location", frame=frame
+        )
+
+        direction = target - cam.location
+        if direction.length > 0:
+            rot = direction.to_track_quat(
+                '-Z', 'Y'
+            ).to_euler()
+            cam.rotation_euler = rot
+            cam.keyframe_insert(
+                data_path="rotation_euler", frame=frame
+            )
+
+        cam.data.lens = lens - (ease * 2)
+        cam.data.keyframe_insert(
+            data_path="lens", frame=frame
+        )
+
+    print(f"✅ {subject} | frames {start}-{end}")
+
+# ZOOM OUT 601-750
+print("🌌 Zoom out...")
+for frame in range(601, 751):
+    progress = (frame - 601) / 149.0
+    ease = (1 - math.cos(progress * math.pi)) / 2
+    pull = ease * 400
+
+    cx = 20
+    cy = -100 - pull
+    cz = 50 + (ease * 190)
+
+    cam.location = Vector((cx, cy, cz))
+    cam.keyframe_insert(data_path="location", frame=frame)
+
+    target = Vector((0, 0, 0))
+    direction = target - cam.location
+    if direction.length > 0:
+        rot = direction.to_track_quat('-Z', 'Y').to_euler()
+        cam.rotation_euler = rot
+        cam.keyframe_insert(
+            data_path="rotation_euler", frame=frame
+        )
+
+    lens_val = 42 - (ease * 7)
+    cam.data.lens = lens_val
+    cam.data.keyframe_insert(
+        data_path="lens", frame=frame
+    )
+
+print("✅ Zoom out done!")
+
+# LOCK 750-2100
+print("🔒 Locking camera 750-2100...")
+final_pos = Vector((20.0, -500.0, 240.0))
+target = Vector((0.0, 0.0, 0.0))
+direction = target - final_pos
+final_rot = direction.to_track_quat('-Z', 'Y').to_euler()
+final_lens = 35.0
+
+for frame in range(750, 2101):
+    cam.location = final_pos
+    cam.keyframe_insert(data_path="location", frame=frame)
+    cam.rotation_euler = final_rot
+    cam.keyframe_insert(
+        data_path="rotation_euler", frame=frame
+    )
+    cam.data.lens = final_lens
+    cam.data.keyframe_insert(
+        data_path="lens", frame=frame
+    )
+    if (frame - 750) % 300 == 0:
+        pct = int((frame - 750) / 1350 * 100)
+        print(f"   {pct}% locked...")
+
+# CONSTANT interpolation
+if cam.animation_data and cam.animation_data.action:
+    action = cam.animation_data.action
+    try:
+        for layer in action.layers:
+            for strip in layer.strips:
+                for channelbag in strip.channelbags:
+                    for fcurve in channelbag.fcurves:
+                        for kp in fcurve.keyframe_points:
+                            kp.interpolation = 'CONSTANT'
+        print("✅ CONSTANT interpolation set!")
+    except Exception as e:
+        print(f"⚠️ Note: {e}")
+
+# =========================
+# PLANET LABELS
+# =========================
+print("📝 Creating planet labels...")
+
+label_shots = [
+    # (name,          display_name,      start, end,  color)
+    ("Sun",     "THE SUN",          1,    60,  (1.0, 0.8, 0.2, 1.0)),
+    ("Mercury", "MERCURY",         61,   120,  (0.7, 0.7, 0.7, 1.0)),
+    ("Venus",   "VENUS",          121,   180,  (0.9, 0.7, 0.3, 1.0)),
+    ("Earth",   "EARTH",          181,   240,  (0.2, 0.6, 1.0, 1.0)),
+    ("Mars",    "MARS",           241,   300,  (0.9, 0.3, 0.2, 1.0)),
+    ("Belt",    "ASTEROID BELT",  301,   360,  (0.6, 0.55,0.5, 1.0)),
+    ("Jupiter", "JUPITER",        361,   420,  (0.8, 0.6, 0.4, 1.0)),
+    ("Saturn",  "SATURN",         421,   480,  (0.9, 0.8, 0.5, 1.0)),
+    ("Uranus",  "URANUS",         481,   540,  (0.4, 0.8, 0.9, 1.0)),
+    ("Neptune", "NEPTUNE",        541,   600,  (0.2, 0.4, 0.9, 1.0)),
+]
+
+for shot_name, display_name, start, end, color in label_shots:
+    create_label(shot_name, display_name, start, end, cam, color)
+
+bpy.context.scene.frame_set(1)
+
+print("")
+print("🚀 COMPLETE SOLAR SYSTEM DONE!")
+print("")
+print("📽️ Timeline:")
+print("  1-60    ☀️  THE SUN")
+print("  61-120  ☿  MERCURY")
+print("  121-180 ♀️  VENUS")
+print("  181-240 🌍 EARTH + Moon")
+print("  241-300 ♂️  MARS + Phobos + Deimos")
+print("  301-360 🪨 ASTEROID BELT")
+print("  361-420 ♃  JUPITER + 4 moons")
+print("  421-480 ♄  SATURN + 3 moons")
+print("  481-540 ⛢  URANUS + 2 moons")
+print("  541-600 ♆  NEPTUNE + Triton")
+print("  601-750 🌌 Zoom out")
+print("  750-2100 📷 Full system locked!")
+print("")
+print("▶️  Numpad 0 → Z Rendered → Space!")

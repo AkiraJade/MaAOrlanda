@@ -280,6 +280,14 @@
                             <i class="fas fa-download"></i> Download Blender
                             Project
                         </a>
+                        <button
+                            type="button"
+                            id="viewScriptBtn"
+                            class="btn-glow btn-glow-white"
+                            style="cursor:pointer;"
+                        >
+                            <i class="fas fa-code"></i> View Script
+                        </button>
                         <a
                             href="rotoscoping.html"
                             class="btn-glow btn-glow-dark"
@@ -287,6 +295,23 @@
                             <i class="fas fa-chevron-left"></i> View Rotoscoping
                             Project
                         </a>
+                    </div>
+                </div>
+
+                <!-- Solar System Script Modal -->
+                <div id="solarScriptModal" class="planet-prompt hidden" role="dialog" aria-modal="true" aria-label="Solar System Script">
+                    <div class="planet-prompt-backdrop"></div>
+                    <div class="planet-prompt-box" style="max-width:820px;">
+                        <button type="button" class="planet-prompt-close" aria-label="Close script viewer">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div class="planet-prompt-script" style="width:100%;">
+                            <label class="script-label">
+                                <i class="fas fa-code" style="margin-right:0.5rem;"></i>
+                                Full Solar System Python Script
+                            </label>
+                            <pre id="solarScriptContent" class="planet-script-box">Loading script...</pre>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -334,8 +359,7 @@
                     icon: "☀️",
                     iconClass: "sun-icon",
                     orbitalPeriodYears: 0,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Sun here.",
+                    scriptFile: "Scripts/SunScript.txt",
                     visible: true,
                 },
                 {
@@ -353,8 +377,7 @@
                     icon: "☿",
                     iconClass: "mercury-icon",
                     orbitalPeriodYears: 0.241,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Mercury here.",
+                    scriptFile: "Scripts/MercuryScript.txt",
                     visible: true,
                 },
                 {
@@ -372,8 +395,7 @@
                     icon: "♀",
                     iconClass: "venus-icon",
                     orbitalPeriodYears: 0.615,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Venus here.",
+                    scriptFile: "Scripts/VenusScript.txt",
                     visible: true,
                 },
                 {
@@ -391,8 +413,7 @@
                     icon: "🌍",
                     iconClass: "earth-icon",
                     orbitalPeriodYears: 1.0,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Earth here.",
+                    scriptFile: "Scripts/EarthScript.txt",
                     visible: true,
                 },
                 {
@@ -410,8 +431,7 @@
                     icon: "♂",
                     iconClass: "mars-icon",
                     orbitalPeriodYears: 1.881,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Mars here.",
+                    scriptFile: "Scripts/MarsScript.txt",
                     visible: true,
                 },
                 {
@@ -429,8 +449,7 @@
                     icon: "♃",
                     iconClass: "jupiter-icon",
                     orbitalPeriodYears: 11.86,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Jupiter here.",
+                    scriptFile: "Scripts/JupiterScript.txt",
                     visible: true,
                 },
                 {
@@ -448,8 +467,7 @@
                     icon: "♄",
                     iconClass: "saturn-icon",
                     orbitalPeriodYears: 29.46,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Saturn here.",
+                    scriptFile: "Scripts/SaturnScript.txt",
                     visible: true,
                 },
                 {
@@ -467,8 +485,7 @@
                     icon: "♅",
                     iconClass: "uranus-icon",
                     orbitalPeriodYears: 84.01,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Uranus here.",
+                    scriptFile: "Scripts/UranusScript.txt",
                     visible: true,
                 },
                 {
@@ -486,8 +503,7 @@
                     icon: "♆",
                     iconClass: "neptune-icon",
                     orbitalPeriodYears: 164.8,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Neptune here.",
+                    scriptFile: "Scripts/NeptuneScript.txt",
                     visible: true,
                 },
                 {
@@ -505,8 +521,7 @@
                     icon: "♇",
                     iconClass: "pluto-icon",
                     orbitalPeriodYears: 248.0,
-                    scriptUsed:
-                        "// Add your Blender/Python script for Pluto here.",
+                    scriptFile: "Scripts/PlutoScript.txt",
                     visible: true,
                 },
             ];
@@ -885,7 +900,7 @@
                                     <pre
                                         id="script-${index}"
                                         class="planet-script-box"
-                                    >${body.scriptUsed || "// Add your Blender/Python script in the celestialBodies array for this planet."}</pre>
+                                    >Loading script...</pre>
                                 </div>
                             </div>
                         </div>
@@ -901,9 +916,23 @@
                     const promptBackdrop = section.querySelector(
                         ".planet-prompt-backdrop",
                     );
+                    let scriptLoaded = false;
                     if (learnMoreBtn && promptBox) {
                         learnMoreBtn.addEventListener("click", () => {
                             promptBox.classList.remove("hidden");
+                            if (!scriptLoaded && body.scriptFile) {
+                                scriptLoaded = true;
+                                fetch(body.scriptFile)
+                                    .then(r => r.text())
+                                    .then(text => {
+                                        const pre = section.querySelector("#script-" + index);
+                                        if (pre) pre.textContent = text;
+                                    })
+                                    .catch(() => {
+                                        const pre = section.querySelector("#script-" + index);
+                                        if (pre) pre.textContent = "// Script file not found.";
+                                    });
+                            }
                         });
                     }
                     if (promptClose && promptBox) {
@@ -994,6 +1023,33 @@
                     showPlanet(navButtons.length - 1);
                 }
             });
+
+            // === View Script button (Solar System Script modal) ===
+            (function () {
+                const btn = document.getElementById("viewScriptBtn");
+                const modal = document.getElementById("solarScriptModal");
+                if (!btn || !modal) return;
+                const closeBtn = modal.querySelector(".planet-prompt-close");
+                const backdrop = modal.querySelector(".planet-prompt-backdrop");
+                const pre = document.getElementById("solarScriptContent");
+                let loaded = false;
+
+                function openModal() {
+                    modal.classList.remove("hidden");
+                    if (!loaded) {
+                        loaded = true;
+                        fetch("Scripts/SolarSystemScript.txt")
+                            .then(r => r.text())
+                            .then(text => { if (pre) pre.textContent = text; })
+                            .catch(() => { if (pre) pre.textContent = "// Script file not found."; });
+                    }
+                }
+                function closeModal() { modal.classList.add("hidden"); }
+
+                btn.addEventListener("click", openModal);
+                if (closeBtn) closeBtn.addEventListener("click", closeModal);
+                if (backdrop) backdrop.addEventListener("click", closeModal);
+            })();
         </script>
     </body>
 </html>

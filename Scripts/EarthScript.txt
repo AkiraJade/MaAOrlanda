@@ -1,0 +1,65 @@
+import bpy
+import math
+
+for obj in bpy.data.objects:
+    if obj.type == 'LIGHT':
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+bpy.ops.object.light_add(type='POINT', location=(0, -4, 2))
+l1 = bpy.context.object
+l1.name = "Light_Front"
+l1.data.energy = 800
+l1.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 4, 2))
+l2 = bpy.context.object
+l2.name = "Light_Back"
+l2.data.energy = 400
+l2.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 5))
+l3 = bpy.context.object
+l3.name = "Light_Top"
+l3.data.energy = 300
+l3.data.use_shadow = False
+
+earth = bpy.data.objects.get("Earth")
+if earth:
+    earth.location = (0, 0, 0)
+    earth.scale = (1.5, 1.5, 1.5)
+    earth.visible_shadow = False
+    earth.animation_data_clear()
+    earth.rotation_euler = (0, 0, 0)
+    earth.keyframe_insert(data_path="rotation_euler", frame=1)
+    earth.rotation_euler = (0, 0, math.radians(360))
+    earth.keyframe_insert(data_path="rotation_euler", frame=250)
+    print("✅ Earth ready!")
+else:
+    print("⚠️ Earth not found!")
+
+moon = bpy.data.objects.get("Moon")
+if moon:
+    moon.scale = (0.35, 0.35, 0.35)
+    moon.visible_shadow = False
+    moon.animation_data_clear()
+    for frame in range(1, 251):
+        angle = math.radians(frame * 4)
+        moon.location.x = 2.5 * math.cos(angle)
+        moon.location.y = 2.5 * math.sin(angle)
+        moon.location.z = 0
+        moon.keyframe_insert(data_path="location", frame=frame)
+    print("✅ Moon orbiting Earth!")
+else:
+    print("⚠️ Moon not found!")
+
+camera = bpy.data.objects.get("Camera")
+if camera is None:
+    bpy.ops.object.camera_add()
+    camera = bpy.context.object
+    camera.name = "Camera"
+camera.location = (0, -10, 0)
+camera.rotation_euler = (math.radians(90), 0, 0)
+bpy.context.scene.camera = camera
+camera.data.lens = 50
+print("✅ Camera set!")
+print("🚀 Done! Numpad 0 → Z → Rendered → Space!")

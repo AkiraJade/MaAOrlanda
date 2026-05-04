@@ -1,0 +1,86 @@
+import bpy
+import math
+
+for obj in bpy.data.objects:
+    if obj.type == 'LIGHT':
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+bpy.ops.object.light_add(type='POINT', location=(0, -4, 2))
+l1 = bpy.context.object
+l1.name = "Light_Front"
+l1.data.energy = 800
+l1.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 4, 2))
+l2 = bpy.context.object
+l2.name = "Light_Back"
+l2.data.energy = 400
+l2.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 5))
+l3 = bpy.context.object
+l3.name = "Light_Top"
+l3.data.energy = 300
+l3.data.use_shadow = False
+
+mars = bpy.data.objects.get("Mars")
+if mars:
+    mars.location = (0, 0, 0)
+    mars.scale = (1.2, 1.2, 1.2)
+    mars.visible_shadow = False
+    mars.animation_data_clear()
+    mars.rotation_euler = (0, 0, 0)
+    mars.keyframe_insert(data_path="rotation_euler", frame=1)
+    mars.rotation_euler = (0, 0, math.radians(360))
+    mars.keyframe_insert(data_path="rotation_euler", frame=250)
+    print("✅ Mars ready!")
+else:
+    print("⚠️ Mars not found!")
+
+# Phobos
+phobos = bpy.data.objects.get("Moon")
+if phobos:
+    phobos.scale = (0.15, 0.15, 0.15)
+    phobos.visible_shadow = False
+    phobos.animation_data_clear()
+    for frame in range(1, 251):
+        angle = math.radians(frame * 10)
+        phobos.location.x = 2.0 * math.cos(angle)
+        phobos.location.y = 2.0 * math.sin(angle)
+        phobos.location.z = 0
+        phobos.keyframe_insert(data_path="location", frame=frame)
+    print("✅ Phobos orbiting!")
+else:
+    print("⚠️ Phobos (Moon) not found!")
+
+# Deimos
+deimos = bpy.data.objects.get("Moon.001")
+if deimos:
+    deimos.scale = (0.10, 0.10, 0.10)
+    deimos.visible_shadow = False
+    deimos.animation_data_clear()
+    for frame in range(1, 251):
+        angle = math.radians(frame * 4)
+        deimos.location.x = 3.5 * math.cos(angle)
+        deimos.location.y = 3.5 * math.sin(angle)
+        deimos.location.z = 0
+        deimos.keyframe_insert(data_path="location", frame=frame)
+    print("✅ Deimos orbiting!")
+else:
+    print("⚠️ Deimos (Moon.001) not found!")
+
+camera = bpy.data.objects.get("Camera")
+if camera is None:
+    bpy.ops.object.camera_add()
+    camera = bpy.context.object
+    camera.name = "Camera"
+camera.location = (8, -8, 5)
+camera.rotation_euler = (
+    math.radians(60),
+    math.radians(0),
+    math.radians(45)
+)
+bpy.context.scene.camera = camera
+camera.data.lens = 35
+print("✅ Camera set!")
+print("🚀 Done! Numpad 0 → Z → Rendered → Space!")

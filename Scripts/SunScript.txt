@@ -1,0 +1,54 @@
+import bpy
+import math
+
+# === REMOVE OLD LIGHTS ===
+for obj in bpy.data.objects:
+    if obj.type == 'LIGHT':
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+# === ADD 3 LIGHTS ===
+bpy.ops.object.light_add(type='POINT', location=(0, -4, 2))
+l1 = bpy.context.object
+l1.name = "Light_Front"
+l1.data.energy = 800
+l1.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 4, 2))
+l2 = bpy.context.object
+l2.name = "Light_Back"
+l2.data.energy = 400
+l2.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 5))
+l3 = bpy.context.object
+l3.name = "Light_Top"
+l3.data.energy = 300
+l3.data.use_shadow = False
+
+# === SUN SETUP ===
+sun = bpy.data.objects.get("The Sun")
+if sun is None:
+    sun = bpy.data.objects.get("Sun")
+if sun:
+    sun.location = (0, 0, 0)
+    sun.scale = (1.0, 1.0, 1.0)
+    sun.visible_shadow = False
+    sun.animation_data_clear()
+    sun.rotation_euler = (0, 0, 0)
+    sun.keyframe_insert(data_path="rotation_euler", frame=1)
+    sun.rotation_euler = (0, 0, math.radians(360))
+    sun.keyframe_insert(data_path="rotation_euler", frame=250)
+    print("✅ Sun ready!")
+
+# === CAMERA ===
+camera = bpy.data.objects.get("Camera")
+if camera is None:
+    bpy.ops.object.camera_add()
+    camera = bpy.context.object
+    camera.name = "Camera"
+camera.location = (0, -10, 0)
+camera.rotation_euler = (math.radians(90), 0, 0)
+bpy.context.scene.camera = camera
+camera.data.lens = 50
+print("✅ Camera set!")
+print("🚀 Sun ready! Press Numpad 0 → Z → Rendered → Space!")

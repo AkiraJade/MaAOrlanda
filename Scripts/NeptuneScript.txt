@@ -1,0 +1,84 @@
+import bpy
+import math
+
+for obj in bpy.data.objects:
+    if obj.type == 'LIGHT':
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+bpy.ops.object.light_add(type='POINT', location=(0, -6, 3))
+l1 = bpy.context.object
+l1.name = "Light_Front"
+l1.data.energy = 1000
+l1.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 6, 3))
+l2 = bpy.context.object
+l2.name = "Light_Back"
+l2.data.energy = 500
+l2.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 8))
+l3 = bpy.context.object
+l3.name = "Light_Top"
+l3.data.energy = 400
+l3.data.use_shadow = False
+
+neptune = bpy.data.objects.get("Neptune")
+if neptune:
+    neptune.location = (0, 0, 0)
+    neptune.scale = (1.2, 1.2, 1.2)
+    neptune.visible_shadow = False
+    neptune.animation_data_clear()
+    neptune.rotation_euler = (0, 0, 0)
+    neptune.keyframe_insert(data_path="rotation_euler", frame=1)
+    neptune.rotation_euler = (0, 0, math.radians(360))
+    neptune.keyframe_insert(data_path="rotation_euler", frame=250)
+    print("✅ Neptune ready!")
+else:
+    print("⚠️ Neptune not found!")
+
+# Triton orbits BACKWARDS!
+existing = bpy.data.objects.get("Triton")
+if existing:
+    bpy.data.objects.remove(existing, do_unlink=True)
+
+bpy.ops.mesh.primitive_uv_sphere_add(
+    radius=0.3, location=(6, 0, 0)
+)
+triton = bpy.context.object
+triton.name = "Triton"
+triton.scale = (1.0, 1.0, 1.0)
+
+mat = bpy.data.materials.new(name="Triton_Mat")
+mat.use_nodes = True
+nodes = mat.node_tree.nodes
+nodes.clear()
+bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+bsdf.inputs["Base Color"].default_value = (0.7, 0.6, 0.65, 1.0)
+bsdf.inputs["Roughness"].default_value = 0.8
+output = nodes.new("ShaderNodeOutputMaterial")
+mat.node_tree.links.new(
+    bsdf.outputs["BSDF"], output.inputs["Surface"]
+)
+triton.data.materials.append(mat)
+
+triton.animation_data_clear()
+for frame in range(1, 251):
+    angle = math.radians(frame * -5)  # backwards!
+    triton.location.x = 6.0 * math.cos(angle)
+    triton.location.y = 6.0 * math.sin(angle)
+    triton.location.z = 0
+    triton.keyframe_insert(data_path="location", frame=frame)
+print("✅ Triton orbiting backwards!")
+
+camera = bpy.data.objects.get("Camera")
+if camera is None:
+    bpy.ops.object.camera_add()
+    camera = bpy.context.object
+    camera.name = "Camera"
+camera.location = (0, -18, 9)
+camera.rotation_euler = (math.radians(65), 0, 0)
+bpy.context.scene.camera = camera
+camera.data.lens = 35
+print("✅ Camera set!")
+print("🚀 Done! Numpad 0 → Z → Rendered → Space!")

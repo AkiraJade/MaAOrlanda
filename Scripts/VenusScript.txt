@@ -1,0 +1,50 @@
+import bpy
+import math
+
+for obj in bpy.data.objects:
+    if obj.type == 'LIGHT':
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+bpy.ops.object.light_add(type='POINT', location=(0, -4, 2))
+l1 = bpy.context.object
+l1.name = "Light_Front"
+l1.data.energy = 800
+l1.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 4, 2))
+l2 = bpy.context.object
+l2.name = "Light_Back"
+l2.data.energy = 400
+l2.data.use_shadow = False
+
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 5))
+l3 = bpy.context.object
+l3.name = "Light_Top"
+l3.data.energy = 300
+l3.data.use_shadow = False
+
+venus = bpy.data.objects.get("Venus")
+if venus:
+    venus.location = (0, 0, 0)
+    venus.scale = (1.5, 1.5, 1.5)
+    venus.visible_shadow = False
+    venus.animation_data_clear()
+    venus.rotation_euler = (0, 0, 0)
+    venus.keyframe_insert(data_path="rotation_euler", frame=1)
+    venus.rotation_euler = (0, 0, math.radians(360))
+    venus.keyframe_insert(data_path="rotation_euler", frame=250)
+    print("✅ Venus ready!")
+else:
+    print("⚠️ Venus not found!")
+
+camera = bpy.data.objects.get("Camera")
+if camera is None:
+    bpy.ops.object.camera_add()
+    camera = bpy.context.object
+    camera.name = "Camera"
+camera.location = (0, -8, 0)
+camera.rotation_euler = (math.radians(90), 0, 0)
+bpy.context.scene.camera = camera
+camera.data.lens = 50
+print("✅ Camera set!")
+print("🚀 Done! Numpad 0 → Z → Rendered → Space!")
