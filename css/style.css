@@ -1976,6 +1976,7 @@ body.solar-page .hero-glass h1 {
 .planet-script-box {
     width: 100%;
     min-height: 140px;
+    max-height: 55vh;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(4, 2, 10, 0.75);
@@ -1985,7 +1986,7 @@ body.solar-page .hero-glass h1 {
     font-size: 0.82rem;
     line-height: 1.5;
     white-space: pre-wrap;
-    overflow: auto;
+    overflow-y: auto;
 }
 .planet-prompt {
     position: absolute;
@@ -2005,6 +2006,8 @@ body.solar-page .hero-glass h1 {
     position: relative;
     z-index: 1;
     width: min(940px, 95%);
+    max-height: 85vh;
+    overflow-y: auto;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: linear-gradient(
@@ -2013,7 +2016,7 @@ body.solar-page .hero-glass h1 {
         rgba(6, 3, 18, 0.98)
     );
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
-    padding: 1rem;
+    padding: 2.5rem 1.25rem 1.25rem;
 }
 .planet-prompt-close {
     position: absolute;
@@ -2042,6 +2045,12 @@ body.solar-page .hero-glass h1 {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-size: 0.86rem;
+}
+.all-info-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-top: 0.4rem;
 }
 @media (max-width: 900px) {
     .planet-prompt-grid {
