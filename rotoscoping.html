@@ -81,6 +81,38 @@
         </div>
       </section>
 
+      <!-- ── FINAL OUTPUT SHOWCASE ── -->
+      <section class="final-output-showcase reveal">
+        <div class="final-output-header">
+          <p class="eyebrow">Final Output</p>
+          <h2>Rotoscoping vs Reference</h2>
+          <p class="final-output-desc">Compare the final rotoscoped animation side by side with the original reference video.</p>
+        </div>
+        <div class="final-output-controls">
+          <button type="button" id="syncPlayBtn" class="sync-play-btn">
+            <i class="fas fa-play"></i>
+            <span>Sync & Play Both</span>
+          </button>
+        </div>
+        <div class="final-output-grid">
+          <div class="final-output-card">
+            <div class="final-output-label"><i class="fas fa-film"></i> Final Output</div>
+            <div class="video-wrapper">
+              <div id="rotoFinalPlayer"></div>
+            </div>
+          </div>
+          <div class="final-output-card">
+            <div class="final-output-label"><i class="fas fa-video"></i> Reference Video</div>
+            <div class="video-wrapper">
+              <div id="rotoRefPlayer"></div>
+            </div>
+          </div>
+        </div>
+        <p class="text-muted" style="text-align:center; font-size:0.78rem; margin-top:1rem; font-style:italic; opacity:0.8;">
+          These videos are for educational purposes only. No copyright infringement is intended. All rights belong to their respective owners.
+        </p>
+      </section>
+
       <!-- ── BODY ── -->
       <div class="content-section">
         <div class="about-body">
@@ -459,6 +491,9 @@
     </div>
   </footer>
 
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <script>
     // Set current year
     document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -469,6 +504,58 @@
     navToggle.addEventListener('click', () => {
       navLinks.classList.toggle('active');
     });
+
+    // === YouTube Synced Playback ===
+    let rotoFinalPlayer, rotoRefPlayer;
+    let playersReady = 0;
+    let isSyncing = false;
+
+    function onYouTubeIframeAPIReady() {
+      rotoFinalPlayer = new YT.Player('rotoFinalPlayer', {
+        videoId: 'GkiBTfBHI3I',
+        playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
+        events: { 'onReady': onPlayerReady }
+      });
+      rotoRefPlayer = new YT.Player('rotoRefPlayer', {
+        videoId: '3ntrVGjYeUc',
+        playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
+        events: { 'onReady': onPlayerReady }
+      });
+    }
+
+    function onPlayerReady() {
+      playersReady++;
+      if (playersReady >= 2) {
+        document.getElementById('syncPlayBtn').disabled = false;
+      }
+    }
+
+    // Sync & Play button
+    const syncBtn = document.getElementById('syncPlayBtn');
+    if (syncBtn) {
+      syncBtn.addEventListener('click', function () {
+        if (!rotoFinalPlayer || !rotoRefPlayer) return;
+
+        const state1 = rotoFinalPlayer.getPlayerState();
+        const state2 = rotoRefPlayer.getPlayerState();
+
+        // If either is playing, pause both
+        if (state1 === YT.PlayerState.PLAYING || state2 === YT.PlayerState.PLAYING) {
+          rotoFinalPlayer.pauseVideo();
+          rotoRefPlayer.pauseVideo();
+          syncBtn.innerHTML = '<i class="fas fa-play"></i><span>Sync & Play Both</span>';
+          syncBtn.classList.remove('playing');
+        } else {
+          // Seek both to 0 and play
+          rotoFinalPlayer.seekTo(0, true);
+          rotoRefPlayer.seekTo(0, true);
+          rotoFinalPlayer.playVideo();
+          rotoRefPlayer.playVideo();
+          syncBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause Both</span>';
+          syncBtn.classList.add('playing');
+        }
+      });
+    }
 
   </script>
 </body>

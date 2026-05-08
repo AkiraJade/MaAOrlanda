@@ -2069,4 +2069,241 @@ body.solar-page .hero-glass h1 {
     }
 }
 
+/* ---- Final Output Showcase ---- */
+.final-output-showcase {
+    background: linear-gradient(
+        180deg,
+        rgba(18, 9, 34, 0.7),
+        rgba(8, 4, 22, 0.55)
+    );
+    border: 1px solid rgba(255, 183, 213, 0.1);
+    border-radius: var(--radius-xl);
+    padding: 2rem 2rem 1.75rem;
+    margin: 1.5rem auto 2rem;
+    max-width: var(--content-max);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-lg);
+}
+.final-output-showcase::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.final-output-showcase::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent, var(--accent));
+    opacity: 0.5;
+}
+.final-output-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.final-output-header h2 {
+    font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+}
+.final-output-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    max-width: 52ch;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+.final-output-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+.sync-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.85rem 2rem;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 183, 213, 0.35);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 183, 213, 0.15),
+        rgba(180, 124, 255, 0.1)
+    );
+    color: var(--accent-light);
+    font-family: "Space Grotesk", "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-smooth);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 28px rgba(255, 183, 213, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.sync-play-btn::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), rgba(180, 124, 255, 0.6));
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.35s ease;
+}
+.sync-play-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: rgba(255, 183, 213, 0.55);
+    color: var(--white);
+    box-shadow: 0 10px 40px rgba(255, 183, 213, 0.2),
+                0 4px 14px rgba(0, 0, 0, 0.3);
+}
+.sync-play-btn:hover::before {
+    opacity: 0.12;
+}
+.sync-play-btn:active {
+    transform: translateY(-1px) scale(1);
+}
+.sync-play-btn.playing {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 183, 213, 0.25),
+        rgba(180, 124, 255, 0.18)
+    );
+    border-color: var(--accent);
+    animation: syncPulse 2s ease-in-out infinite;
+}
+@keyframes syncPulse {
+    0%, 100% { box-shadow: 0 6px 28px rgba(255, 183, 213, 0.12); }
+    50% { box-shadow: 0 6px 36px rgba(255, 183, 213, 0.28); }
+}
+.sync-play-btn i {
+    font-size: 0.9rem;
+    transition: transform 0.25s ease;
+}
+.sync-play-btn:hover i {
+    transform: scale(1.15);
+}
+
+/* Side-by-side video grid */
+.final-output-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+.final-output-card {
+    background: linear-gradient(
+        180deg,
+        rgba(10, 5, 24, 0.92),
+        rgba(6, 3, 16, 0.95)
+    );
+    border: 1px solid rgba(146, 129, 255, 0.2);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+    transition: var(--transition-smooth);
+}
+.final-output-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 183, 213, 0.18);
+}
+.final-output-label {
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.final-output-label i {
+    font-size: 0.78rem;
+    opacity: 0.8;
+}
+
+/* Single video (Solar System) */
+.final-output-single {
+    display: flex;
+    justify-content: center;
+}
+
+/* Solar System play overlay */
+.solar-final-video-wrap {
+    position: relative;
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+    background: #050312;
+}
+.solar-final-video-wrap video {
+    width: 100%;
+    display: block;
+    cursor: pointer;
+}
+.solar-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(4, 1, 12, 0.55);
+    border: none;
+    cursor: pointer;
+    z-index: 3;
+    transition: all 0.35s var(--ease-smooth);
+}
+.solar-play-overlay i {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    color: var(--white);
+    background: linear-gradient(135deg, var(--accent), rgba(180, 124, 255, 0.7));
+    box-shadow: 0 8px 36px rgba(255, 183, 213, 0.3);
+    transition: all 0.35s var(--ease-smooth);
+}
+.solar-play-overlay:hover i {
+    transform: scale(1.12);
+    box-shadow: 0 12px 48px rgba(255, 183, 213, 0.45);
+}
+.solar-play-overlay.hidden-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .final-output-grid {
+        grid-template-columns: 1fr;
+    }
+    .final-output-showcase {
+        padding: 1.25rem;
+        margin: 1rem auto 1.5rem;
+    }
+    .sync-play-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    .solar-play-overlay i {
+        width: 60px;
+        height: 60px;
+        font-size: 1.4rem;
+    }
+}
+
 /* End of file - Futuristic / Space themed stylesheet (midnight purple + sakura pink) */
