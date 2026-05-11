@@ -124,6 +124,7 @@
                         flex-wrap: wrap;
                     "
                 >
+                    <label for="ageInput" class="sr-only">Enter your age in Earth years</label>
                     <input
                         type="number"
                         id="ageInput"
@@ -330,10 +331,10 @@
                         </button>
                         <div class="planet-prompt-script" style="width:100%;">
                             <div class="script-header">
-                                <label class="script-label">
+                                <span class="script-label">
                                     <i class="fas fa-code" style="margin-right:0.5rem;"></i>
                                     Full Solar System Python Script
-                                </label>
+                                </span>
                                 <button type="button" class="copy-script-btn" data-target="solarScriptContent" aria-label="Copy script">
                                     <i class="fas fa-copy"></i> Copy
                                 </button>
@@ -925,9 +926,9 @@
                                 </div>
                                 <div class="planet-prompt-script">
                                     <div class="script-header">
-                                        <label class="script-label" for="script-${index}">
+                                        <span class="script-label">
                                             Script Used for ${body.name}
-                                        </label>
+                                        </span>
                                         <button type="button" class="copy-script-btn" data-target="script-${index}" aria-label="Copy script">
                                             <i class="fas fa-copy"></i> Copy
                                         </button>
